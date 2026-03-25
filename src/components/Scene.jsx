@@ -131,7 +131,7 @@ export default function Scene() {
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      <Canvas camera={{ position: [0, 3, 11], fov: 49 }}>
+      <Canvas camera={{ position: [0, 3, 11], fov: 55 }}>
         <ambientLight intensity={0.6} />
         <directionalLight position={[5, 5, 5]} />
 
