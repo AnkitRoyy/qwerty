@@ -1,0 +1,220 @@
+/* 🔥 RESET */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* 🔥 NAVBAR BASE */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+
+  z-index: 1000;
+}
+
+/* 🔥 GLASS CURTAIN DROP */
+.navbar::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 90px;
+
+  background: rgba(20, 35, 60, 0.45);
+  backdrop-filter: blur(30px);
+
+  transform: translateY(-100%);
+  transition: transform 0.5s ease;
+
+  z-index: -1;
+}
+
+.navbar.scrolled::before {
+  transform: translateY(0);
+}
+
+/* 🔷 GLASS CONTAINER */
+.nav-container {
+  width: 100%;
+  height: 70px;
+
+  padding: 0 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-radius: 0;
+
+  background: rgba(20, 35, 60, 0.25);
+  backdrop-filter: blur(26px);
+
+  border-bottom: 1px solid rgba(120, 180, 255, 0.25);
+
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.5),
+    inset 0 0 30px rgba(120, 180, 255, 0.05);
+
+  position: relative;
+  overflow: hidden;
+}
+
+/* 🔥 CURSOR GLOW */
+.nav-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: radial-gradient(
+    220px circle at var(--x, 50%) var(--y, 50%),
+    rgba(120, 180, 255, 0.25),
+    transparent 60%
+  );
+
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.nav-container:hover::before {
+  opacity: 1;
+}
+
+/* 🔥 LOGO */
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  font-weight: 650;           /* 🔥 slightly bold */
+  font-size: 1.05rem;
+  letter-spacing: 0.3px;
+
+  white-space: nowrap;
+}
+
+.logo-main {
+  color: #ffffff;
+}
+
+.logo-accent {
+  color: #e6f3ff;             /* 🔥 more white */
+}
+
+/* 🔷 MENU CENTERED */
+.nav-menu {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  gap: 6px;
+
+  padding: 4px;
+  border-radius: 999px;
+
+  background: rgba(120, 180, 255, 0.06);
+}
+
+/* 🔥 SLIDING INDICATOR */
+.nav-indicator {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+
+  width: 90px;
+  height: calc(100% - 8px);
+
+  border-radius: 999px;
+
+  background: linear-gradient(
+    120deg,
+    rgba(120,180,255,0.25),
+    rgba(120,180,255,0.08)
+  );
+
+  box-shadow:
+    0 0 14px rgba(120,180,255,0.3),
+    inset 0 0 8px rgba(255,255,255,0.2);
+
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* 🔘 NAV ITEMS */
+.nav-item {
+  position: relative;
+  z-index: 2;
+
+  width: 90px;
+  height: 36px;
+
+  border: none;
+  cursor: pointer;
+
+  background: transparent;
+
+  color: rgba(255,255,255,0.85); /* 🔥 brighter */
+
+  font-size: 0.92rem;
+  font-weight: 300;              /* 🔥 slight bold */
+  letter-spacing: 0.2px;
+
+  border-radius: 999px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: all 0.2s ease;
+}
+
+.nav-item.active {
+  color: #ffffff;
+  text-shadow: 0 0 6px rgba(255,255,255,0.25);
+}
+
+.nav-item:hover {
+  color: #ffffff;
+}
+
+/* 📱 RESPONSIVE */
+@media (max-width: 900px) {
+  .nav-container {
+    padding: 0 20px;
+  }
+
+  .nav-item {
+    width: 80px;
+    font-size: 0.8rem;
+  }
+
+  .nav-indicator {
+    width: 80px;
+  }
+}
+
+@media (max-width: 600px) {
+  .nav-logo {
+    font-size: 0.85rem;
+  }
+
+  .nav-item {
+    width: 70px;
+    font-size: 0.75rem;
+  }
+
+  .nav-indicator {
+    width: 70px;
+  }
+}
+
+@media (max-width: 420px) {
+  .nav-menu {
+    display: none;
+  }
+}

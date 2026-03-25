@@ -1,0 +1,37 @@
+.app-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+
+  background-image: url('./assets/bg-blue.png');
+  background-size: cover;
+  background-position: center;
+}
+
+/* 🔥 HERO (BEHIND SCENE) */
+.hero {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* 🔥 CANVAS (ON TOP) */
+.canvas-container {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: min(100vw, 1220px);
+  height: min(44vh, 430px);
+  transform: translateX(-50%);
+  z-index: 10;
+  pointer-events: none;
+}
+
+@media (max-width: 1024px) {
+  .canvas-container {
+    width: min(100vw, 980px);
+    height: min(34vh, 300px);
+  }
+}

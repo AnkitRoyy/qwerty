@@ -1,0 +1,150 @@
+import { Canvas, useFrame } from '@react-three/fiber'
+import { Suspense, useMemo, useRef, useState, useEffect } from 'react'
+import * as THREE from 'three'
+
+import CentralNode from './CentralNode'
+import PeripheralNode from './PeripheralNode'
+import Connections from './Connections'
+
+const TEAMS = [
+  "UAS DTU", "RAFTAAR", "UGV", "ALTAIR",
+  "ROBOTICS", "SOLARIS", "AUV",
+]
+
+function RotatingGroup({ nodes, isHovering }) {
+  const ref = useRef()
+  const [rotationY, setRotationY] = useState(0)
+
+  const state = useRef({
+    isDragging: false,
+    lastX: 0,
+    velocity: 0,
+    targetRotation: 0
+  })
+
+  /* 🖱️ DRAG START */
+  const onPointerDown = (e) => {
+    e.stopPropagation()
+    state.current.isDragging = true
+    state.current.lastX = e.clientX
+    document.body.style.cursor = "grabbing"
+  }
+
+  /* 🖱️ DRAG END */
+  const onPointerUp = () => {
+    state.current.isDragging = false
+    document.body.style.cursor = "grab"
+  }
+
+  /* 🖱️ DRAG MOVE */
+  const onPointerMove = (e) => {
+    if (!state.current.isDragging) return
+
+    const dx = e.clientX - state.current.lastX
+    state.current.lastX = e.clientX
+
+    const delta = dx * 0.005
+    state.current.targetRotation += delta
+    state.current.velocity = delta
+  }
+
+  /* 🌀 SCROLL */
+  useEffect(() => {
+    const onWheel = (e) => {
+      if (!isHovering) return
+
+      e.preventDefault()
+      state.current.targetRotation += e.deltaY * 0.001
+    }
+
+    window.addEventListener("wheel", onWheel, { passive: false })
+    return () => window.removeEventListener("wheel", onWheel)
+  }, [isHovering])
+
+  /* 🎬 MAIN LOOP */
+  useFrame(() => {
+    // 🔥 MOMENTUM
+    if (!state.current.isDragging) {
+      state.current.targetRotation += state.current.velocity
+      state.current.velocity *= 0.92
+    }
+
+    // 🔥 APPLY ROTATION
+    if (ref.current) {
+      ref.current.rotation.y = THREE.MathUtils.lerp(
+        ref.current.rotation.y,
+        state.current.targetRotation,
+        0.08
+      )
+
+      setRotationY(ref.current.rotation.y)
+    }
+  })
+
+  return (
+    <group
+      ref={ref}
+      onPointerDown={onPointerDown}
+      onPointerUp={onPointerUp}
+      onPointerLeave={onPointerUp}
+      onPointerMove={onPointerMove}
+      onPointerOver={() => (document.body.style.cursor = "grab")}
+      onPointerOut={() => (document.body.style.cursor = "auto")}
+    >
+      {nodes.map((node, i) => (
+        <PeripheralNode key={i} {...node} />
+      ))}
+
+      <Connections nodes={nodes} rotationY={rotationY} />
+
+      {/* invisible interaction area */}
+      <mesh visible={false}>
+        <cylinderGeometry args={[6.5, 6.5, 10, 32]} />
+        <meshBasicMaterial transparent opacity={0} />
+      </mesh>
+    </group>
+  )
+}
+
+export default function Scene() {
+  const [hover, setHover] = useState(false)
+  const nodes = useMemo(() => {
+    const radius = 5
+
+    return TEAMS.map((title, i) => {
+      const angle = (i / TEAMS.length) * Math.PI * 2
+
+      return {
+        title,
+        position: [
+          Math.cos(angle) * radius,
+          0.28,
+          Math.sin(angle) * radius
+        ]
+      }
+    })
+  }, [])
+
+  return (
+    <div
+      className="canvas-container"
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+    >
+      <Canvas camera={{ position: [0, 3, 11], fov: 49 }}>
+        <ambientLight intensity={0.6} />
+        <directionalLight position={[5, 5, 5]} />
+
+        <Suspense fallback={null}>
+          <group position={[0, 1.05, 0]} scale={1.68}>
+            <CentralNode />
+            <RotatingGroup
+              nodes={nodes}
+              isHovering={hover}
+            />
+          </group>
+        </Suspense>
+      </Canvas>
+    </div>
+  )
+}
