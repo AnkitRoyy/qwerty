@@ -1,5 +1,6 @@
 import { Canvas, useFrame } from '@react-three/fiber'
-import { Suspense, useMemo, useRef, useState, useEffect } from 'react'
+import { Suspense, useRef, useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import * as THREE from 'three'
 
 import CentralNode from './CentralNode'
@@ -8,12 +9,11 @@ import Connections from './Connections'
 
 const TEAMS = [
   "UAS DTU", "RAFTAAR", "UGV", "ALTAIR",
-  "ROBOTICS", "SOLARIS", "AUV",
+  "ROBOTICS", "SOLARIS", "AUV", "Team 1", "Team 2", "team 3",
 ]
 
-function RotatingGroup({ nodes, isHovering }) {
+function RotatingGroup({ nodes, isHovering, onNodeClick }) {
   const ref = useRef()
-  const [rotationY, setRotationY] = useState(0)
 
   const state = useRef({
     isDragging: false,
@@ -76,8 +76,6 @@ function RotatingGroup({ nodes, isHovering }) {
         state.current.targetRotation,
         0.08
       )
-
-      setRotationY(ref.current.rotation.y)
     }
   })
 
@@ -92,10 +90,10 @@ function RotatingGroup({ nodes, isHovering }) {
       onPointerOut={() => (document.body.style.cursor = "auto")}
     >
       {nodes.map((node, i) => (
-        <PeripheralNode key={i} {...node} />
+        <PeripheralNode key={i} {...node} onClick={onNodeClick} />
       ))}
 
-      <Connections nodes={nodes} rotationY={rotationY} />
+      <Connections nodes={nodes} />
 
       {/* invisible interaction area */}
       <mesh visible={false}>
@@ -107,23 +105,21 @@ function RotatingGroup({ nodes, isHovering }) {
 }
 
 export default function Scene() {
+  const navigate = useNavigate()
   const [hover, setHover] = useState(false)
-  const nodes = useMemo(() => {
+  const nodes = TEAMS.map((title, i) => {
     const radius = 5
+    const angle = (i / TEAMS.length) * Math.PI * 2
 
-    return TEAMS.map((title, i) => {
-      const angle = (i / TEAMS.length) * Math.PI * 2
-
-      return {
-        title,
-        position: [
-          Math.cos(angle) * radius,
-          0.28,
-          Math.sin(angle) * radius
-        ]
-      }
-    })
-  }, [])
+    return {
+      title,
+      position: [
+        Math.cos(angle) * radius,
+        0.28,
+        Math.sin(angle) * radius
+      ]
+    }
+  })
 
   return (
     <div
@@ -141,6 +137,7 @@ export default function Scene() {
             <RotatingGroup
               nodes={nodes}
               isHovering={hover}
+              onNodeClick={(title) => navigate(`/team/${encodeURIComponent(title)}`)}
             />
           </group>
         </Suspense>

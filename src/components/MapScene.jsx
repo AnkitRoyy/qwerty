@@ -13,41 +13,58 @@ function MapModel() {
   const groupRef = useRef()
 
   useLayoutEffect(() => {
-  if (!scene || !groupRef.current) return
+    if (!scene || !groupRef.current) return
 
-  // 🔥 force update before measuring
-  scene.updateMatrixWorld(true)
+    // 🔥 force update before measuring
+    scene.traverse((child) => {
+      if (child.isMesh && child.geometry) {
+        child.geometry.computeBoundingBox()
+        child.geometry.computeBoundingSphere()
+      }
+    })
 
-  const box = new THREE.Box3().setFromObject(scene)
-  const center = box.getCenter(new THREE.Vector3())
-  const size = box.getSize(new THREE.Vector3())
+    // ⚠️ CRITICAL: Reset the parent group scale and position so scene measures its true size!
+    // Otherwise on React re-renders, it measures the already-scaled model and zooms back in.
+    groupRef.current.scale.set(1, 1, 1)
+    groupRef.current.position.set(0, 0, 0)
+    
+    // Update matrices BEFORE measuring bounding box
+    groupRef.current.updateMatrixWorld(true)
+    scene.updateMatrixWorld(true)
 
-  const maxDim = Math.max(size.x, size.y, size.z)
+    const box = new THREE.Box3().setFromObject(scene)
+    const center = box.getCenter(new THREE.Vector3())
+    const size = box.getSize(new THREE.Vector3())
 
-  // ⚠️ prevent divide-by-zero / tiny scale bug
-  if (maxDim === 0) return
+    const maxDim = Math.max(size.x, size.y, size.z)
 
-  const scale = 5 / maxDim
+    // ⚠️ prevent divide-by-zero / tiny scale bug
+    if (maxDim === 0) return
 
-  groupRef.current.scale.setScalar(scale)
+    const scale = 30 / maxDim
 
-  groupRef.current.position.set(
-    -center.x * scale,
-    -center.y * scale,
-    -center.z * scale
-  )
+    groupRef.current.scale.setScalar(scale)
 
-}, [scene])
+    // Shift map up slightly
+    const yOffset = 5;
+    
+    groupRef.current.position.set(
+      -center.x * scale,
+      -center.y * scale + yOffset,
+      -center.z * scale
+    )
+
+  }, [scene])
 
   return (
     <group ref={groupRef}>
       <primitive object={scene} />
 
       <TeamMarker position={[14, 3.2, -40]} label="UGV" />
-<TeamMarker position={[-1, 0.2, 2]} label="Robotics" />
-<TeamMarker position={[3, 0.2, 3]} label="Solaris" />
-<TeamMarker position={[-3, 0.2, -2]} label="Altair" />
-<TeamMarker position={[1, 0.2, 4]} label="UAV" />
+      <TeamMarker position={[-1, 0.2, 2]} label="Robotics" />
+      <TeamMarker position={[3, 0.2, 3]} label="Solaris" />
+      <TeamMarker position={[-3, 0.2, -2]} label="Altair" />
+      <TeamMarker position={[1, 0.2, 4]} label="UAV" />
     </group>
   )
 }
@@ -57,13 +74,13 @@ export default function MapScene() {
     <div style={{ width: "100%", height: "100%" }}>
       <Canvas
         style={{ width: "100%", height: "100%" }}
-        camera={{ position: [0, 8, 16], fov: 60 }}
+        camera={{ position: [0, 15, 30], fov: 60 }}
       >
         {/* 🌌 BACKGROUND */}
         <color attach="background" args={['#020617']} />
 
         {/* 🌫️ FOG */}
-        <fog attach="fog" args={['#020617', 10, 50]} />
+        {/* <fog attach="fog" args={['#020617', 30, 120]} /> */}
 
         {/* 💡 LIGHTING */}
         <ambientLight intensity={0.5} />
@@ -82,16 +99,16 @@ export default function MapScene() {
         />
 
         <OrbitControls
-  enableZoom={true}
-  minDistance={3}
-  maxDistance={20}
-  maxPolarAngle={Math.PI / 2.1}
-/>
+          enableZoom={true}
+          minDistance={3}
+          maxDistance={120}
+          maxPolarAngle={Math.PI / 2.1}
+        />
 
         {/* 🗺️ MAP */}
         <MapModel />
 
-        
+
       </Canvas>
     </div>
   )

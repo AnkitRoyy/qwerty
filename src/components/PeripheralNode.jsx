@@ -14,7 +14,7 @@ const getIcon = (title) => {
   return "⚙️"
 }
 
-export default function PeripheralNode({ position, title }) {
+export default function PeripheralNode({ position, title, onClick }) {
   const ref = useRef()
   const worldPos = useRef(new THREE.Vector3())
   const [hovered, setHovered] = useState(false)
@@ -46,6 +46,10 @@ export default function PeripheralNode({ position, title }) {
       position={position}
       onPointerOver={() => setHovered(true)}
       onPointerOut={() => setHovered(false)}
+      onClick={(e) => {
+        e.stopPropagation()
+        if (onClick) onClick(title)
+      }}
     >
       <Billboard>
 
