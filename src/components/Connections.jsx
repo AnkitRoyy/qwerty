@@ -8,139 +8,106 @@ export default function Connections({ nodes }) {
   return (
     <group>
       {nodes.map((node, i) => (
-        <SingleConnection key={i} node={node} start={start} />
+        <SingleConnection key={i} node={node} start={start} index={i} />
       ))}
     </group>
   )
 }
 
-/* 🔥 SINGLE CONNECTION */
-function SingleConnection({ node, start }) {
-
+function SingleConnection({ node, start, index }) {
   const blobRefs = useRef([])
   const speeds = useRef([])
   const offsets = useRef([])
 
-  // 🔥 per-connection randomness
   const baseDelay = useRef(Math.random() * 5)
-  const flowSpeed = useRef(0.8 + Math.random() * 0.6)
+  const flowSpeed = useRef(0.6 + Math.random() * 0.4)
 
   const end = new THREE.Vector3(...node.position)
 
   const mid = new THREE.Vector3(
-    node.position[0] * 0.6,
+    node.position[0] * 0.5,
     -3.5,
-    node.position[2] * 0.6
+    node.position[2] * 0.5
   )
 
-  /* 🔥 CURVE */
   const curve = useMemo(
     () => new THREE.QuadraticBezierCurve3(start, mid, end),
-    [start, mid, end]
+    [start.x, start.y, start.z, mid.x, mid.y, mid.z, end.x, end.y, end.z]
   )
 
-  /* 🔥 OPTIMIZED PIPE */
-  const tubeGeometry = useMemo(() => {
-    return new THREE.TubeGeometry(
-      curve,
-      40,     // smoothness (optimized)
-      0.075,  // thickness
-      12,     // radial segments (optimized)
-      false
-    )
-  }, [curve])
+  // 🔥 just 2 thin tubes — no thick outer glow
+  const lineTube  = useMemo(() => new THREE.TubeGeometry(curve, 60, 0.028, 8, false), [curve])
+  const glowTube  = useMemo(() => new THREE.TubeGeometry(curve, 60, 0.07,  8, false), [curve])
 
-  /* 🔥 INIT RANDOM VALUES */
   useMemo(() => {
     for (let i = 0; i < 3; i++) {
-      speeds.current[i] = 0.02 + Math.random() * 0.03
-      offsets.current[i] = i*0.5+Math.random()*0.2
+      speeds.current[i]  = 0.012 + Math.random() * 0.02
+      offsets.current[i] = i * 0.33 + Math.random() * 0.1
     }
   }, [])
 
-  /* 🔥 ANIMATION LOOP */
   useFrame((state) => {
     const t = state.clock.getElapsedTime()
-
-    // 🔥 unique time per pipe
     const localTime = (t + baseDelay.current) * flowSpeed.current
 
     blobRefs.current.forEach((blob, j) => {
       if (!blob) return
-
-      const progress =
-        (localTime * speeds.current[j] + offsets.current[j]) % 1
-
+      const progress = (localTime * speeds.current[j] + offsets.current[j]) % 1
       const pos = curve.getPoint(progress)
       blob.position.copy(pos)
-
-      // subtle breathing (unsynced)
-      const scale =
-        0.065 + Math.sin(localTime * 2 + j * 1.7) * 0.008
-
+      const scale = 0.055 + Math.sin(localTime * 1.8 + j * 2.1) * 0.008
       blob.scale.setScalar(scale)
     })
   })
 
+const glowColor = "#7dd3fc"
+const lineColor = "#bae6fd"
+
   return (
     <group>
 
-      {/* 🌫️ OUTER GLOW */}
-      <mesh geometry={tubeGeometry}>
+      {/* ── subtle outer glow — very faint ── */}
+      <mesh geometry={glowTube}>
         <meshBasicMaterial
-          color="#38bdf8"
+          color={glowColor}
           transparent
-          opacity={0.06}
+          opacity={0.08}
           depthWrite={false}
         />
       </mesh>
 
-      {/* 🧊 GLASS PIPE */}
-      <mesh geometry={tubeGeometry}>
-        <meshPhysicalMaterial
-          color="#cfe9ff"
+      {/* ── main thin line ── */}
+      <mesh geometry={lineTube}>
+        <meshBasicMaterial
+          color={lineColor}
           transparent
-          opacity={0.28}
-
-          roughness={0.1}
-          metalness={0}
-
-          transmission={1}
-          thickness={1.8}
-          ior={1.3}
-
-          clearcoat={1}
-          clearcoatRoughness={0.06}
-
+          opacity={0.45}
           depthWrite={false}
         />
       </mesh>
 
-      {/* 🔵 BLOBS */}
+      {/* ── 3 small blobs traveling along ── */}
       {[...Array(3)].map((_, j) => (
-        <group
-          key={j}
-          ref={(el) => (blobRefs.current[j] = el)}
-        >
+        <group key={j} ref={(el) => (blobRefs.current[j] = el)}>
 
-          {/* CORE */}
-          <mesh>
-            <sphereGeometry args={[1, 12, 12]} />
+          {/* soft outer glow */}
+          <mesh scale={2.2}>
+            <sphereGeometry args={[1, 8, 8]} />
             <meshBasicMaterial
-              color="#e6faff"
+              color={glowColor}
               transparent
-              opacity={0.9}
+              opacity={0.12}
+              depthWrite={false}
             />
           </mesh>
 
-          {/* GLOW */}
-          <mesh scale={1.6}>
-            <sphereGeometry args={[1, 10, 10]} />
+          {/* bright white dot */}
+          <mesh>
+            <sphereGeometry args={[1, 8, 8]} />
             <meshBasicMaterial
-              color="#38bdf8"
+              color="#ffffff"
               transparent
-              opacity={0.18}
-              depthWrite={false}
+              opacity={0.85}
             />
           </mesh>
 
