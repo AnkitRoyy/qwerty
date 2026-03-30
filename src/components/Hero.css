@@ -5,19 +5,17 @@
   pointer-events: none;
 }
 
-/* ❌ ZONE SHOULD NOT CATCH EVENTS */
 .zone {
   position: absolute;
   bottom: 0;
   height: 100%;
   width: 33.33%;
-  pointer-events: none; /* 🔥 IMPORTANT */
+  pointer-events: none;
   display: flex;
   justify-content: center;
   align-items: flex-end;
 }
 
-/* POSITIONS */
 .zone.left {
   left: -2.6%;
 }
@@ -31,18 +29,16 @@
   right: -2.2%;
 }
 
-/* ✅ IMAGE IS THE ONLY INTERACTIVE ELEMENT */
 .man {
   width: 70%;
   max-width: 600px;
   object-fit: contain;
   opacity: 0.95;
 
-  pointer-events: auto; /* 🔥 ONLY THIS CAN HOVER */
+  pointer-events: auto;
   display: block;
 }
 
-/* POSITIONING */
 .zone.left .man {
   transform: translateY(-26%) scale(1.5);
 }
@@ -51,7 +47,6 @@
   transform: translateY(-28.5%) scale(1.32);
 }
 
-/* 🔥 PRECISE HOVER (NOW WORKS PERFECTLY) */
 .man:hover {
   filter:
     drop-shadow(0 0 1px rgba(0, 255, 255, 1))

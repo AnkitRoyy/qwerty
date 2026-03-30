@@ -1,9 +1,7 @@
-/* 🔥 RESET */
 *, *::before, *::after {
   box-sizing: border-box;
 }
 
-/* 🔥 NAVBAR BASE */
 .navbar {
   position: fixed;
   top: 0;
@@ -16,7 +14,6 @@
   z-index: 1000;
 }
 
-/* 🔥 GLASS CURTAIN DROP */
 .navbar::before {
   content: "";
   position: fixed;
@@ -38,7 +35,6 @@
   transform: translateY(0);
 }
 
-/* 🔷 GLASS CONTAINER */
 .nav-container {
   width: 100%;
   height: 70px;
@@ -64,7 +60,6 @@
   overflow: hidden;
 }
 
-/* 🔥 CURSOR GLOW */
 .nav-container::before {
   content: "";
   position: absolute;
@@ -85,13 +80,12 @@
   opacity: 1;
 }
 
-/* 🔥 LOGO */
 .nav-logo {
   display: flex;
   align-items: center;
   gap: 6px;
 
-  font-weight: 650;           /* 🔥 slightly bold */
+  font-weight: 650;
   font-size: 1.05rem;
   letter-spacing: 0.3px;
 
@@ -103,10 +97,9 @@
 }
 
 .logo-accent {
-  color: #e6f3ff;             /* 🔥 more white */
+  color: #e6f3ff;
 }
 
-/* 🔷 MENU CENTERED */
 .nav-menu {
   position: absolute;
   left: 50%;
@@ -121,7 +114,6 @@
   background: rgba(120, 180, 255, 0.06);
 }
 
-/* 🔥 SLIDING INDICATOR */
 .nav-indicator {
   position: absolute;
   top: 4px;
@@ -145,7 +137,6 @@
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* 🔘 NAV ITEMS */
 .nav-item {
   position: relative;
   z-index: 2;
@@ -158,10 +149,10 @@
 
   background: transparent;
 
-  color: rgba(255,255,255,0.85); /* 🔥 brighter */
+  color: rgba(255,255,255,0.85);
 
   font-size: 0.92rem;
-  font-weight: 300;              /* 🔥 slight bold */
+  font-weight: 300;
   letter-spacing: 0.2px;
 
   border-radius: 999px;
@@ -182,7 +173,6 @@
   color: #ffffff;
 }
 
-/* 📱 RESPONSIVE */
 @media (max-width: 900px) {
   .nav-container {
     padding: 0 20px;

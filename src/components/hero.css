@@ -5,41 +5,36 @@
   pointer-events: none;
 }
 
-/* ZONES */
 .zone {
   position: absolute;
-  bottom: 0;              /* 🔥 stick to ground */
+  bottom: 0;
   height: 100%;
   width: 33.33%;
   pointer-events: auto;
   display: flex;
   justify-content: center;
-  align-items: flex-end;  /* 🔥 anchor to bottom */
+  align-items: flex-end;
 }
 
-/* LEFT */
 .zone.left {
   left: -1.56%;
 }
 
-/* CENTER */
 .zone.center {
   left: 36%;
   transform: translateY(-18%);
   scale: 0.93;
 }
 
-/* RIGHT */
 .zone.right {
   right: -1.3%;
 }
 
-/* MANNEQUIN */
 .man {
   width: 70%;
   max-width: 600px;
 
-  transform: translateY(10%); /* 🔥 push slightly down to match ground */
+  transform: translateY(10%);
 
   object-fit: contain;
   opacity: 0.95;
@@ -49,10 +44,6 @@
 .zone.left .man {
   transform: translateY(-26%) scale(1.5);
 }
-
-/* .zone.center .man {
-  transform: translateY(8%) scale(1);
-} */
 
 .zone.right .man {
   transform: translateY(-28.5%) scale(1.32);

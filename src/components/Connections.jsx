@@ -35,7 +35,6 @@ function SingleConnection({ node, start, index }) {
     [start.x, start.y, start.z, mid.x, mid.y, mid.z, end.x, end.y, end.z]
   )
 
-  // 🔥 just 2 thin tubes — no thick outer glow
   const lineTube  = useMemo(() => new THREE.TubeGeometry(curve, 60, 0.028, 8, false), [curve])
   const glowTube  = useMemo(() => new THREE.TubeGeometry(curve, 60, 0.07,  8, false), [curve])
 
@@ -65,8 +64,6 @@ const lineColor = "#bae6fd"
 
   return (
     <group>
-
-      {/* ── subtle outer glow — very faint ── */}
       <mesh geometry={glowTube}>
         <meshBasicMaterial
           color={glowColor}
@@ -75,8 +72,6 @@ const lineColor = "#bae6fd"
           depthWrite={false}
         />
       </mesh>
-
-      {/* ── main thin line ── */}
       <mesh geometry={lineTube}>
         <meshBasicMaterial
           color={lineColor}
@@ -85,12 +80,8 @@ const lineColor = "#bae6fd"
           depthWrite={false}
         />
       </mesh>
-
-      {/* ── 3 small blobs traveling along ── */}
       {[...Array(3)].map((_, j) => (
         <group key={j} ref={(el) => (blobRefs.current[j] = el)}>
-
-          {/* soft outer glow */}
           <mesh scale={2.2}>
             <sphereGeometry args={[1, 8, 8]} />
             <meshBasicMaterial
@@ -100,8 +91,6 @@ const lineColor = "#bae6fd"
               depthWrite={false}
             />
           </mesh>
-
-          {/* bright white dot */}
           <mesh>
             <sphereGeometry args={[1, 8, 8]} />
             <meshBasicMaterial

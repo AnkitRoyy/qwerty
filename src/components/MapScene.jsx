@@ -5,8 +5,6 @@ import * as THREE from 'three'
 import TeamMarker from './TeamMarker'
 
 useGLTF.preload('/map.glb')
-
-// 🔵 ANIMATED GRID FLOOR
 function GridFloor() {
   const ref = useRef()
   useFrame((state) => {
@@ -28,8 +26,6 @@ function GridFloor() {
     </mesh>
   )
 }
-
-// ✨ FLOATING PARTICLES
 function Particles({ count = 60 }) {
   const mesh = useRef()
 
@@ -64,8 +60,6 @@ function Particles({ count = 60 }) {
     </points>
   )
 }
-
-// 🔵 ROTATING RING AROUND MAP
 function RingPulse() {
   const ref  = useRef()
   const ref2 = useRef()
@@ -91,8 +85,6 @@ function RingPulse() {
     </group>
   )
 }
-
-// 🌀 RADAR SWEEP
 function RadarSweep() {
   const ref = useRef()
 
@@ -119,8 +111,6 @@ function RadarSweep() {
     </group>
   )
 }
-
-// 🔵 CORNER BRACKET DECORATIONS
 function CornerBrackets() {
   const ref = useRef()
   useFrame((state) => {
@@ -150,25 +140,20 @@ function CornerBrackets() {
     </group>
   )
 }
-
-// 🏙️ HEIGHT-BASED SHADER MATERIAL
-// Low points (land/roads) → dark navy
-// High points (building tops) → bright cyan
-// This works regardless of how many meshes the model has
 function createHeightMaterial(minY, maxY) {
   return new THREE.ShaderMaterial({
     uniforms: {
       uMinY:      { value: minY },
       uMaxY:      { value: maxY },
-      uLandColor: { value: new THREE.Color('#0a1828') },   // very dark navy for flat land
-      uBldColor:  { value: new THREE.Color('#7dd3fc') },   // bright sky-blue for building tops
+      uLandColor: { value: new THREE.Color('#0a1828') },
+      uBldColor:  { value: new THREE.Color('#7dd3fc') },
       uLightDir:  { value: new THREE.Vector3(0.4, 1.0, 0.6).normalize() },
     },
-    vertexShader: /* glsl */`
+    vertexShader: `
       uniform float uMinY;
       uniform float uMaxY;
 
-      varying float vHeight;   // normalized 0..1
+      varying float vHeight;
       varying vec3  vNormal;
       varying vec3  vWorldPos;
 
@@ -180,7 +165,7 @@ function createHeightMaterial(minY, maxY) {
         gl_Position = projectionMatrix * viewMatrix * worldPos;
       }
     `,
-    fragmentShader: /* glsl */`
+    fragmentShader: `
       uniform vec3  uLandColor;
       uniform vec3  uBldColor;
       uniform vec3  uLightDir;
@@ -190,19 +175,11 @@ function createHeightMaterial(minY, maxY) {
       varying vec3  vWorldPos;
 
       void main() {
-        // Remap: below 5% height = pure land, above 15% = full building color
         float t = smoothstep(0.05, 0.20, vHeight);
-
-        // Base color blend
         vec3 baseColor = mix(uLandColor, uBldColor, t);
-
-        // Simple diffuse shading — makes building sides darker than tops
         float diff = max(dot(vNormal, uLightDir), 0.0);
-        // Keep a strong ambient so dark faces don't go fully black
         float ambient = 0.35;
         float light = ambient + (1.0 - ambient) * diff;
-
-        // Building tops get an extra emissive boost so they glow slightly
         float emissive = t * 0.25;
 
         vec3 finalColor = baseColor * light + uBldColor * emissive * t;
@@ -219,8 +196,6 @@ function MapModel() {
 
   useLayoutEffect(() => {
     if (!scene || !groupRef.current) return
-
-    // First pass: compute geometry bounds
     scene.traverse((child) => {
       if (child.isMesh && child.geometry) {
         child.geometry.computeBoundingBox()
@@ -249,15 +224,10 @@ function MapModel() {
       -center.y * scale + yOffset,
       -center.z * scale
     )
-
-    // World-space Y range after scaling
     groupRef.current.updateMatrixWorld(true)
     const worldBox = new THREE.Box3().setFromObject(groupRef.current)
     const minY = worldBox.min.y
     const maxY = worldBox.max.y
-
-    // Second pass: apply height shader — one material instance per mesh
-    // so each mesh can reference the same global minY/maxY
     scene.traverse((child) => {
       if (child.isMesh) {
         child.material = createHeightMaterial(minY, maxY)
@@ -299,13 +269,11 @@ export default function MapScene() {
         >
           <color attach="background" args={['#020c1b']} />
 
-          {/* Minimal lighting — the shader handles most shading internally */}
-          <ambientLight intensity={0.3} color="#ffffff" />
+                    <ambientLight intensity={0.3} color="#ffffff" />
           <directionalLight position={[5, 12, 15]}  intensity={0.8} color="#c8e6f5" />
           <pointLight position={[0, 20, 0]} intensity={0.6} color="#38bdf8" distance={60} decay={2} />
 
-          {/* ✨ SCENE ELEMENTS */}
-          <GridFloor />
+                    <GridFloor />
           <Particles count={60} />
           <RingPulse />
           <RadarSweep />

@@ -48,7 +48,6 @@ const GALLERY = [
   { url: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80", caption: "Night navigation trials" },
 ]
 
-// ─── TERRAIN ───────────────────────────────────────────────
 function terrainY(x, z) {
   const bowl  = Math.sin(z * 0.09) * 0.6
   const macro = Math.sin(x * 0.22 + 0.5) * 0.9 + Math.cos(z * 0.18 + 1.2) * 0.7
@@ -58,7 +57,6 @@ function terrainY(x, z) {
   return bowl + macro + mid + fine + micro
 }
 
-// ─── BODY POSE (6-wheel terrain fitting) ───────────────────
 const WHEEL_LOCAL_XZ = [
   [-0.52,  0.48], [ 0.52,  0.48],
   [-0.58,  0.00], [ 0.58,  0.00],
@@ -91,7 +89,6 @@ function computeBodyPose(wx, wz, yaw) {
   return { y: bodyY, pitch, roll }
 }
 
-// ─── TERRAIN GEOMETRY ──────────────────────────────────────
 function buildGeo(W, D, segsX, segsZ) {
   const geo = new THREE.PlaneGeometry(W, D, segsX, segsZ)
   geo.rotateX(-Math.PI / 2)
@@ -138,8 +135,7 @@ function MarsGround({ onTerrainClick }) {
   const wireGeo  = useMemo(() => buildGeo(48,52,28,28),   [])
   return (
     <group>
-      {/* Clickable invisible plane for terrain picking */}
-      <mesh
+            <mesh
         rotation={[-Math.PI/2, 0, 0]}
         position={[0, 0, 0]}
         onClick={onTerrainClick}
@@ -163,7 +159,6 @@ function MarsGround({ onTerrainClick }) {
   )
 }
 
-// ─── WAYPOINT MARKER ───────────────────────────────────────
 const WAYPOINT_COORDS = [
   [-6.5,0,0.6],[-4.5,0,-0.5],[-2,0,0.9],[0.5,0,-0.2],[2.8,0,0.8],[5.5,0,0.3],[7,0,1.4]
 ]
@@ -194,7 +189,6 @@ function WaypointMarker({ wp, active, idx }) {
   )
 }
 
-// ─── NAV TARGET MARKER (Nav2-style) ────────────────────────
 function NavTargetMarker({ target }) {
   const ringRef  = useRef()
   const ring2Ref = useRef()
@@ -216,33 +210,28 @@ function NavTargetMarker({ target }) {
 
   return (
     <group position={[target.x, y, target.z]}>
-      {/* Ground ring — solid */}
-      <mesh ref={ringRef} rotation={[Math.PI/2, 0, 0]} position={[0, 0.04, 0]}>
+            <mesh ref={ringRef} rotation={[Math.PI/2, 0, 0]} position={[0, 0.04, 0]}>
         <ringGeometry args={[0.22, 0.32, 32]} />
         <meshBasicMaterial color="#00ff88" transparent opacity={0.85} depthWrite={false} side={THREE.DoubleSide} />
       </mesh>
 
-      {/* Pulsing outer ring */}
-      <mesh ref={ring2Ref} rotation={[Math.PI/2, 0, 0]} position={[0, 0.05, 0]}>
+            <mesh ref={ring2Ref} rotation={[Math.PI/2, 0, 0]} position={[0, 0.05, 0]}>
         <ringGeometry args={[0.32, 0.42, 32]} />
         <meshBasicMaterial color="#00ff88" transparent opacity={0.35} depthWrite={false} side={THREE.DoubleSide} />
       </mesh>
 
-      {/* Vertical laser beam */}
-      <mesh position={[0, 0.6, 0]}>
+            <mesh position={[0, 0.6, 0]}>
         <cylinderGeometry args={[0.012, 0.012, 1.2, 6]} />
         <meshBasicMaterial color="#00ff88" transparent opacity={0.35} depthWrite={false} />
       </mesh>
 
-      {/* Downward arrow chevron */}
-      <group ref={arrowRef} position={[0, 0.5, 0]}>
+            <group ref={arrowRef} position={[0, 0.5, 0]}>
         <mesh rotation={[0, 0, Math.PI]}>
           <coneGeometry args={[0.1, 0.22, 8]} />
           <meshBasicMaterial color="#00ff88" transparent opacity={0.9} depthWrite={false} />
         </mesh>
       </group>
 
-      {/* Corner brackets on ground */}
       {[0, Math.PI/2, Math.PI, Math.PI*1.5].map((angle, i) => (
         <group key={i} rotation={[0, angle, 0]}>
           <mesh position={[0.45, 0.04, 0.45]} rotation={[Math.PI/2, 0, 0]}>
@@ -256,13 +245,11 @@ function NavTargetMarker({ target }) {
         </group>
       ))}
 
-      {/* Point light for glow effect */}
-      <pointLight color="#00ff88" intensity={2.5} distance={4} decay={2} position={[0, 0.3, 0]} />
+            <pointLight color="#00ff88" intensity={2.5} distance={4} decay={2} position={[0, 0.3, 0]} />
     </group>
   )
 }
 
-// ─── CLICK RIPPLE (brief animation on click) ───────────────
 function ClickRipple({ pos, onDone }) {
   const ref = useRef()
   const startTime = useRef(null)
@@ -289,7 +276,6 @@ function ClickRipple({ pos, onDone }) {
   )
 }
 
-// ─── UGV MODEL ─────────────────────────────────────────────
 function UGVModel({ scanning }) {
   const wheels  = [useRef(),useRef(),useRef(),useRef(),useRef(),useRef()]
   const arm     = useRef(), lidar = useRef(), ring1 = useRef(), ring2 = useRef(), scanSph = useRef()
@@ -381,7 +367,6 @@ function UGVModel({ scanning }) {
   )
 }
 
-// ─── DUST TRAIL ────────────────────────────────────────────
 function DustTrail({ roverPos, moving }) {
   const mesh  = useRef()
   const COUNT = 80
@@ -428,7 +413,6 @@ function DustTrail({ roverPos, moving }) {
   )
 }
 
-// ─── SCAN BURST ────────────────────────────────────────────
 function ScanBurst({ active, pos }) {
   const mesh  = useRef()
   const COUNT = 80
@@ -461,19 +445,14 @@ function ScanBurst({ active, pos }) {
   )
 }
 
-// ─── ROVER SCENE ───────────────────────────────────────────
-// Mode: "auto" = back-and-forth on WAYPOINT_COORDS
-//        "nav"  = heading to user-clicked target
 function RoverScene({ onRoverClick, scanning, scanPos, navTarget, onNavArrived }) {
   const roverRef  = useRef()
   const roverXZ   = useRef({ x:-6.5, z:0.6 })
   const roverYaw  = useRef(0)
   const wpIdx     = useRef(0)
   const roverPos  = useRef(new THREE.Vector3(-6.5, 0, 0.6))
-  const mode      = useRef("auto")  // "auto" | "nav"
+  const mode      = useRef("auto")
   const { camera } = useThree()
-
-  // Ripple state
   const [ripple, setRipple] = useState(null)
 
   useEffect(() => {
@@ -483,8 +462,6 @@ function RoverScene({ onRoverClick, scanning, scanPos, navTarget, onNavArrived }
 
   const waypoints = useMemo(() =>
     WAYPOINT_COORDS.map(([x,,z]) => ({ x, z, y:terrainY(x,z) })), [])
-
-  // When navTarget changes → switch to nav mode immediately
   useEffect(() => {
     if (navTarget) mode.current = "nav"
   }, [navTarget])
@@ -495,29 +472,25 @@ function RoverScene({ onRoverClick, scanning, scanPos, navTarget, onNavArrived }
     roverRef.current.position.set(roverXZ.current.x, pose.y, roverXZ.current.z)
     roverPos.current.set(roverXZ.current.x, pose.y, roverXZ.current.z)
   }, [])
-
-  // Handle terrain click → produce ripple + notify parent
   const handleTerrainClick = useCallback((e) => {
     e.stopPropagation()
     if (scanning) return
     const pt = e.point
-    // Snap Y to actual terrain height
     const ty = terrainY(pt.x, pt.z)
     const target = { x: pt.x, z: pt.z, y: ty }
     setRipple({ x: pt.x, z: pt.z })
-    onNavArrived && onNavArrived(target)  // pass up to parent as new nav target
+    onNavArrived && onNavArrived(target)
   }, [scanning, onNavArrived])
 
   useFrame((_, delta) => {
     if (!roverRef.current || scanning) return
 
-    let tx, tz  // current target X, Z
+    let tx, tz
 
     if (mode.current === "nav" && navTarget) {
       tx = navTarget.x
       tz = navTarget.z
     } else {
-      // auto mode
       const wp = waypoints[wpIdx.current % waypoints.length]
       tx = wp.x; tz = wp.z
     }
@@ -529,7 +502,6 @@ function RoverScene({ onRoverClick, scanning, scanPos, navTarget, onNavArrived }
 
     if (dist < arrivalThreshold) {
       if (mode.current === "nav") {
-        // Arrived at user target → notify parent (triggers 2s timer back to auto)
         onNavArrived && onNavArrived(null)
         mode.current = "auto"
       } else {
@@ -575,17 +547,14 @@ function RoverScene({ onRoverClick, scanning, scanPos, navTarget, onNavArrived }
         <planeGeometry args={[80,6]} /><meshBasicMaterial color="#000f06" transparent opacity={0.45} depthWrite={false} side={THREE.DoubleSide} />
       </mesh>
 
-      {/* Auto-route path shown only in auto mode */}
-      {!navTarget && <PathLine waypoints={waypoints} />}
+            {!navTarget && <PathLine waypoints={waypoints} />}
       {!navTarget && waypoints.map((wp,i) => (
         <WaypointMarker key={i} wp={wp} active={i===wpIdx.current%waypoints.length} idx={i} />
       ))}
 
-      {/* Nav target marker */}
-      {navTarget && <NavTargetMarker target={navTarget} />}
+            {navTarget && <NavTargetMarker target={navTarget} />}
 
-      {/* Click ripple */}
-      {ripple && <ClickRipple pos={ripple} onDone={() => setRipple(null)} />}
+            {ripple && <ClickRipple pos={ripple} onDone={() => setRipple(null)} />}
 
       <group ref={roverRef}
         onClick={e => { e.stopPropagation(); onRoverClick(roverPos.current.clone()) }}
@@ -600,7 +569,6 @@ function RoverScene({ onRoverClick, scanning, scanPos, navTarget, onNavArrived }
   )
 }
 
-// ─── SCAN HUD ──────────────────────────────────────────────
 function ScanHUD({ active, onDismiss }) {
   const [progress, setProgress] = useState(0)
   const [phase,    setPhase]    = useState("INIT")
@@ -646,7 +614,6 @@ function ScanHUD({ active, onDismiss }) {
   )
 }
 
-// ─── UI ────────────────────────────────────────────────────
 function SLabel({ n, title }) {
   return (
     <motion.div initial={{opacity:0,x:-12}} whileInView={{opacity:1,x:0}} viewport={{once:true}}
@@ -839,15 +806,13 @@ function ToolchainSection() {
     </section>
   )
 }
-
-// ─── ROOT ──────────────────────────────────────────────────
 export default function TeamUGV() {
   const heroRef       = useRef()
   const [scanning, setScanning]     = useState(false)
   const [scanPos,  setScanPos]      = useState(null)
   const [showHint, setShowHint]     = useState(true)
   const [hoveredStat, setHoveredStat] = useState(null)
-  const [navTarget, setNavTarget]   = useState(null)   // {x, z, y} | null
+  const [navTarget, setNavTarget]   = useState(null)
   const autoTimer = useRef(null)
 
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start","end start"] })
@@ -860,29 +825,19 @@ export default function TeamUGV() {
   }, [scanning])
 
   const handleScanDone = useCallback(() => { setScanning(false); setScanPos(null) }, [])
-
-  // Called by RoverScene when:
-  //   target = {x,z,y} → new nav target from terrain click
-  //   target = null     → rover arrived, start 2s timer then back to auto
   const handleNavUpdate = useCallback((target) => {
     if (autoTimer.current) { clearTimeout(autoTimer.current); autoTimer.current = null }
 
     if (target) {
-      // New click → immediately override any previous target
       setNavTarget(target)
     } else {
-      // Arrived → wait 2s then clear nav (rover goes back to auto)
       autoTimer.current = setTimeout(() => {
         setNavTarget(null)
         autoTimer.current = null
       }, 2000)
     }
   }, [])
-
-  // Cleanup timer on unmount
   useEffect(() => () => { if (autoTimer.current) clearTimeout(autoTimer.current) }, [])
-
-  // HUD status line
   const statusText = scanning
     ? "MISSION SCAN IN PROGRESS"
     : navTarget
@@ -943,8 +898,7 @@ export default function TeamUGV() {
           <AnimatePresence>{scanning&&<ScanHUD active={scanning} onDismiss={handleScanDone}/>}</AnimatePresence>
         </div>
 
-        {/* Click hint — updates based on mode */}
-        <AnimatePresence>
+                <AnimatePresence>
           {showHint&&!scanning&&(
             <motion.div initial={{opacity:0,y:8}} animate={{opacity:1,y:0}} exit={{opacity:0}}
               style={{position:"absolute",bottom:46,left:"50%",transform:"translateX(-50%)",fontFamily:"'Space Mono',monospace",fontSize:"0.48rem",letterSpacing:"0.3em",color:C.accent,zIndex:20,display:"flex",alignItems:"center",gap:10,pointerEvents:"none"}}>
@@ -973,12 +927,14 @@ export default function TeamUGV() {
       </section>
 
       <div style={{maxWidth:1260,margin:"0 auto",padding:"100px 44px 80px"}}>
-        {/* <TelemetrySection hoveredStat={hoveredStat} setHoveredStat={setHoveredStat}/> */}
-        {/* <AboutSection/> */}
-        {/* <DepartmentsSection/> */}
-        {/* <PodiumSection/> */}
-        {/* <GallerySection/> */}
-        {/* <ToolchainSection/> */}
+        {/*
+        <TelemetrySection hoveredStat={hoveredStat} setHoveredStat={setHoveredStat}/>
+        <AboutSection/>
+        <DepartmentsSection/>
+        <PodiumSection/>
+        <GallerySection/>
+        <ToolchainSection/>
+        */}
       </div>
     </div>
   )

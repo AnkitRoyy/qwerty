@@ -20,14 +20,10 @@ export default function Footer() {
       onMouseMove={handleMouseMove}
     >
       <div className="footer-inner">
-
-        {/* LEFT */}
         <div className="footer-left">
           <span className="logo-main">DTU</span>
           <span className="logo-accent">Tech Teams</span>
         </div>
-
-        {/* CENTER */}
         <div className="footer-center">
           {["Home", "Teams", "Projects", "About", "Contact"].map((item, i) => (
             <span key={i} className="footer-link">
@@ -35,8 +31,6 @@ export default function Footer() {
             </span>
           ))}
         </div>
-
-        {/* RIGHT */}
         <div className="footer-right">
           © 2026 DTU
         </div>

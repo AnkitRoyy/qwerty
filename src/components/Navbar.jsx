@@ -38,14 +38,10 @@ export default function Navbar() {
         ref={containerRef}
         onMouseMove={handleMouseMove}
       >
-
-        {/* LEFT LOGO */}
         <div className="nav-logo">
           <span className="logo-main">DTU</span>
           <span className="logo-accent">Tech Teams</span>
         </div>
-
-        {/* CENTER MENU */}
         <div className="nav-menu">
           <div
             className="nav-indicator"

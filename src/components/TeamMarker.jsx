@@ -12,13 +12,11 @@ export default function TeamMarker({ position, label }) {
   useFrame((state) => {
     const t = state.clock.getElapsedTime()
 
-    // 🔥 pulse ring animation
     if (ringRef.current) {
       const scale = 1 + Math.sin(t * 2) * 0.2
       ringRef.current.scale.set(scale, scale, scale)
     }
 
-    // 🔥 floating effect
     if (glowRef.current) {
       glowRef.current.position.y = Math.sin(t * 2) * 0.05
     }
@@ -26,8 +24,6 @@ export default function TeamMarker({ position, label }) {
 
   return (
     <group position={position} scale={17}>
-
-      {/* 🔥 GLOW BASE */}
       <mesh ref={glowRef} position={[0, 0.05, 0]}>
         <sphereGeometry args={[0.12, 16, 16]} />
         <meshBasicMaterial
@@ -36,8 +32,6 @@ export default function TeamMarker({ position, label }) {
           opacity={0.5}
         />
       </mesh>
-
-      {/* 🔥 INNER CORE */}
       <mesh
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)}
@@ -49,8 +43,6 @@ export default function TeamMarker({ position, label }) {
           emissiveIntensity={hovered ? 1 : 0.4}
         />
       </mesh>
-
-      {/* 🔥 PULSE RING */}
       <mesh ref={ringRef} rotation={[-Math.PI / 2, 0, 0]}>
         <ringGeometry args={[0.15, 0.2, 32]} />
         <meshBasicMaterial
@@ -60,8 +52,6 @@ export default function TeamMarker({ position, label }) {
           side={THREE.DoubleSide}
         />
       </mesh>
-
-      {/* 🔥 LABEL */}
       {hovered && (
         <Billboard position={[0, 0.6, 0]}>
           <Text

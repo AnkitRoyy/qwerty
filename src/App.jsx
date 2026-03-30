@@ -11,14 +11,12 @@ import TeamPage from './components/TeamPage'
 function HomePage() {
   return (
     <>
-      {/* 🔥 HERO SCREEN */}
       <div className="app-container">
         <Navbar />
         <Hero />
         <Scene />
       </div>
 
-      {/* 🔥 MAP SECTION */}
       <div className="map-section">
         <MapScene />
       </div>

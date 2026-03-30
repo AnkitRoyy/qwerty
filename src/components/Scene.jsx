@@ -22,7 +22,6 @@ function RotatingGroup({ nodes, isHovering, onNodeClick }) {
     targetRotation: 0
   })
 
-  /* 🖱️ DRAG START */
   const onPointerDown = (e) => {
     e.stopPropagation()
     state.current.isDragging = true
@@ -30,13 +29,11 @@ function RotatingGroup({ nodes, isHovering, onNodeClick }) {
     document.body.style.cursor = "grabbing"
   }
 
-  /* 🖱️ DRAG END */
   const onPointerUp = () => {
     state.current.isDragging = false
     document.body.style.cursor = "grab"
   }
 
-  /* 🖱️ DRAG MOVE */
   const onPointerMove = (e) => {
     if (!state.current.isDragging) return
 
@@ -48,7 +45,6 @@ function RotatingGroup({ nodes, isHovering, onNodeClick }) {
     state.current.velocity = delta
   }
 
-  /* 🌀 SCROLL */
   useEffect(() => {
     const onWheel = (e) => {
       if (!isHovering) return
@@ -61,15 +57,12 @@ function RotatingGroup({ nodes, isHovering, onNodeClick }) {
     return () => window.removeEventListener("wheel", onWheel)
   }, [isHovering])
 
-  /* 🎬 MAIN LOOP */
   useFrame(() => {
-    // 🔥 MOMENTUM
     if (!state.current.isDragging) {
       state.current.targetRotation += state.current.velocity
       state.current.velocity *= 0.92
     }
 
-    // 🔥 APPLY ROTATION
     if (ref.current) {
       ref.current.rotation.y = THREE.MathUtils.lerp(
         ref.current.rotation.y,
@@ -94,8 +87,6 @@ function RotatingGroup({ nodes, isHovering, onNodeClick }) {
       ))}
 
       <Connections nodes={nodes} />
-
-      {/* invisible interaction area */}
       <mesh visible={false}>
         <cylinderGeometry args={[6.5, 6.5, 10, 32]} />
         <meshBasicMaterial transparent opacity={0} />

@@ -5,17 +5,12 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import { OrbitControls, Trail, MeshDistortMaterial, Sparkles } from "@react-three/drei"
 import * as THREE from "three"
 
-/* ═══════════════════════════════════════════════════════════════
-   HERO 3D SCENE — Mouse-reactive gyroscope + rich particles
-═══════════════════════════════════════════════════════════════ */
 
 function MouseTracker({ children }) {
   const groupRef = useRef()
   const { size } = useThree()
   const mouse = useRef({ x: 0, y: 0 })
   const target = useRef({ x: 0, y: 0 })
-
-  // Listen to global mouse
   useMemo(() => {
     const handler = (e) => {
       mouse.current.x = (e.clientX / window.innerWidth - 0.5) * 2
@@ -50,23 +45,19 @@ function GyroscopeRings() {
 
   return (
     <group>
-      {/* Inner bright ring */}
-      <mesh ref={r1}>
+            <mesh ref={r1}>
         <torusGeometry args={[1.8, 0.022, 3, 200]} />
         <meshBasicMaterial color="#38bdf8" transparent opacity={0.55} depthWrite={false} />
       </mesh>
-      {/* Second ring at angle */}
-      <mesh ref={r2} rotation={[Math.PI / 2.5, 0, 0]}>
+            <mesh ref={r2} rotation={[Math.PI / 2.5, 0, 0]}>
         <torusGeometry args={[2.5, 0.016, 3, 200]} />
         <meshBasicMaterial color="#7dd3fc" transparent opacity={0.4} depthWrite={false} />
       </mesh>
-      {/* Third ring */}
-      <mesh ref={r3} rotation={[Math.PI / 6, Math.PI / 5, 0]}>
+            <mesh ref={r3} rotation={[Math.PI / 6, Math.PI / 5, 0]}>
         <torusGeometry args={[3.3, 0.011, 3, 200]} />
         <meshBasicMaterial color="#38bdf8" transparent opacity={0.3} depthWrite={false} />
       </mesh>
-      {/* Outer faint ring */}
-      <mesh ref={r4} rotation={[Math.PI / 3.5, Math.PI / 4, Math.PI / 7]}>
+            <mesh ref={r4} rotation={[Math.PI / 3.5, Math.PI / 4, Math.PI / 7]}>
         <torusGeometry args={[4.2, 0.007, 3, 200]} />
         <meshBasicMaterial color="#bae6fd" transparent opacity={0.18} depthWrite={false} />
       </mesh>
@@ -100,18 +91,15 @@ function PulseSphere() {
 
   return (
     <group>
-      {/* Outer glow */}
-      <mesh ref={glowRef}>
+            <mesh ref={glowRef}>
         <sphereGeometry args={[1.5, 32, 32]} />
         <meshBasicMaterial color="#38bdf8" transparent opacity={0.05} depthWrite={false} side={THREE.BackSide} />
       </mesh>
-      {/* Core */}
-      <mesh ref={ref}>
+            <mesh ref={ref}>
         <sphereGeometry args={[1.0, 32, 32]} />
         <meshBasicMaterial color="#38bdf8" transparent opacity={0.09} depthWrite={false} />
       </mesh>
-      {/* Wireframe */}
-      <mesh ref={wireRef}>
+            <mesh ref={wireRef}>
         <sphereGeometry args={[1.02, 20, 20]} />
         <meshBasicMaterial color="#7dd3fc" wireframe transparent opacity={0.14} depthWrite={false} />
       </mesh>
@@ -181,25 +169,20 @@ function HeroScene() {
   )
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   INTERACTIVE STAT ORBS — hover to expand, drag to spin
-═══════════════════════════════════════════════════════════════ */
 
 function StatOrb({ value, label, unit, color = "#38bdf8" }) {
   const [hovered, setHovered] = useState(false)
 
   return (
     <div style={{ position: "relative" }}>
-      {/* 3D canvas behind the card */}
-      <div style={{ position: "absolute", inset: 0, borderRadius: 4, overflow: "hidden", zIndex: 0 }}>
+            <div style={{ position: "absolute", inset: 0, borderRadius: 4, overflow: "hidden", zIndex: 0 }}>
         <Canvas camera={{ position: [0, 0, 3.5], fov: 40 }}>
           <StatOrbMesh hovered={hovered} color={color} />
           <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={hovered ? 3 : 0.8} />
         </Canvas>
       </div>
 
-      {/* Text overlay */}
-      <motion.div
+            <motion.div
         onHoverStart={() => setHovered(true)}
         onHoverEnd={() => setHovered(false)}
         animate={{ scale: hovered ? 1.03 : 1 }}
@@ -269,9 +252,6 @@ function StatOrbMesh({ hovered, color }) {
   )
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   ACHIEVEMENTS — Floating 3D trophies next to each row
-═══════════════════════════════════════════════════════════════ */
 
 function TrophyOrb({ color, rank }) {
   const group = useRef()
@@ -323,8 +303,7 @@ function TrophyMesh({ color, hovered }) {
         <sphereGeometry args={[0.18, 16, 16]} />
         <meshBasicMaterial color={color} transparent opacity={0.9} depthWrite={false} />
       </mesh>
-      {/* halo */}
-      <mesh>
+            <mesh>
         <sphereGeometry args={[0.22, 16, 16]} />
         <meshBasicMaterial color={color} transparent opacity={hovered ? 0.15 : 0.05} depthWrite={false} />
       </mesh>
@@ -332,9 +311,6 @@ function TrophyMesh({ color, hovered }) {
   )
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   FULL-HEIGHT INTERACTIVE RING DIVIDER — drag to rotate
-═══════════════════════════════════════════════════════════════ */
 
 function BigDividerRings() {
   const g = useRef()
@@ -385,8 +361,7 @@ function BigDividerRings() {
       onPointerOver={() => { document.body.style.cursor = "grab" }}
       onPointerOut={() => { document.body.style.cursor = "auto" }}
     >
-      {/* 7 rings at different tilts, sizes, brightness */}
-      {[
+            {[
         { r: 1.2, tube: 0.04,  tilt: [0, 0, 0],                          col: "#38bdf8", op: 0.75, speed: 0.4  },
         { r: 2.0, tube: 0.028, tilt: [Math.PI/2.2, 0, 0],                col: "#7dd3fc", op: 0.55, speed: 0.28 },
         { r: 2.8, tube: 0.02,  tilt: [Math.PI/5, Math.PI/6, 0],          col: "#38bdf8", op: 0.4,  speed: 0.18 },
@@ -398,11 +373,9 @@ function BigDividerRings() {
         <RingMesh key={i} {...ring} />
       ))}
 
-      {/* Central glowing sphere */}
-      <CentralGlow />
+            <CentralGlow />
 
-      {/* Orbiting dots */}
-      <OrbitingDots />
+            <OrbitingDots />
     </group>
   )
 }
@@ -504,9 +477,6 @@ function DividerScene() {
   )
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   SECTION HEADER MINI ORB — interactive hover
-═══════════════════════════════════════════════════════════════ */
 
 function SectionOrbMesh({ hovered }) {
   const r = useRef(), r2 = useRef()
@@ -545,9 +515,6 @@ function MiniOrb() {
   )
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   TEAM PHOTO 3D FRAME — rings float around the photo
-═══════════════════════════════════════════════════════════════ */
 
 function PhotoFrameScene() {
   const r1 = useRef(), r2 = useRef()
@@ -581,9 +548,6 @@ function PhotoFrameScene() {
   )
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   UI COMPONENTS
-═══════════════════════════════════════════════════════════════ */
 
 const ACHIEVEMENTS = [
   { rank: "1ST PLACE", event: "Design Category",           comp: "ASME e-HPVC 2025",              color: "#fbbf24" },
@@ -606,7 +570,6 @@ const LEADERSHIP = [
 
 const SPONSORS = ["Kazam EV", "SolidWorks", "Ansys", "MATLAB", "Altair"]
 
-/* ── SECTION LABEL ── */
 function SLabel({ n, title }) {
   return (
     <motion.div
@@ -626,7 +589,6 @@ function SLabel({ n, title }) {
   )
 }
 
-/* ── ACHIEVEMENT ROW ── */
 function AchRow({ rank, event, comp, color, i }) {
   return (
     <motion.div
@@ -654,7 +616,6 @@ function AchRow({ rank, event, comp, color, i }) {
   )
 }
 
-/* ── PERSON CARD ── */
 function PersonCard({ name, role, i }) {
   const [hov, setHov] = useState(false)
   return (
@@ -684,9 +645,6 @@ function PersonCard({ name, role, i }) {
   )
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   MAIN PAGE
-═══════════════════════════════════════════════════════════════ */
 export default function TeamRaftaar() {
   const navigate = useNavigate()
   const heroRef = useRef()
@@ -705,8 +663,7 @@ export default function TeamRaftaar() {
         ::-webkit-scrollbar-thumb { background:rgba(56,189,248,0.2); border-radius:99px; }
       `}</style>
 
-      {/* BACK */}
-      <motion.button
+            <motion.button
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
         onClick={() => navigate("/")}
         whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
@@ -723,14 +680,12 @@ export default function TeamRaftaar() {
         ← BACK
       </motion.button>
 
-      {/* ══ HERO ══ */}
-      <section ref={heroRef} style={{ position: "relative", height: "100vh", overflow: "hidden" }}>
+            <section ref={heroRef} style={{ position: "relative", height: "100vh", overflow: "hidden" }}>
         <motion.div style={{ position: "absolute", inset: 0, scale: sceneS }}>
           <HeroScene />
         </motion.div>
 
-        {/* Instruction hint */}
-        <motion.div
+                <motion.div
           initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.6 }}
           style={{
             position: "absolute", top: 24, right: 24, zIndex: 10,
@@ -741,12 +696,10 @@ export default function TeamRaftaar() {
           MOVE CURSOR TO INTERACT
         </motion.div>
 
-        {/* Vignette */}
-        <div style={{ position: "absolute", inset: 0, pointerEvents: "none", background: "radial-gradient(ellipse at center, transparent 30%, rgba(2,12,27,0.55) 100%)" }} />
+                <div style={{ position: "absolute", inset: 0, pointerEvents: "none", background: "radial-gradient(ellipse at center, transparent 30%, rgba(2,12,27,0.55) 100%)" }} />
         <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: "40vh", pointerEvents: "none", background: "linear-gradient(to top, #020c1b, transparent)" }} />
 
-        {/* Hero text */}
-        <motion.div style={{
+                <motion.div style={{
           position: "absolute", inset: 0,
           display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
           y: heroY, opacity: heroOpa, zIndex: 10,
@@ -795,11 +748,9 @@ export default function TeamRaftaar() {
         </motion.div>
       </section>
 
-      {/* ══ BODY ══ */}
-      <div style={{ maxWidth: 960, margin: "0 auto", padding: "90px 28px 70px" }}>
+            <div style={{ maxWidth: 960, margin: "0 auto", padding: "90px 28px 70px" }}>
 
-        {/* STATS — Interactive 3D orbs */}
-        <section style={{ marginBottom: 100 }}>
+                <section style={{ marginBottom: 100 }}>
           <SLabel n={1} title="Telemetry" />
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(190px,1fr))", gap: 12 }}>
             {STATS.map((s, i) => (
@@ -818,16 +769,14 @@ export default function TeamRaftaar() {
           </p>
         </section>
 
-        {/* TEAM PHOTO — 3D rings float around it */}
-        <section style={{ marginBottom: 100 }}>
+                <section style={{ marginBottom: 100 }}>
           <SLabel n={2} title="The Team" />
           <motion.div
             initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }} transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             style={{ position: "relative", borderRadius: 4, overflow: "hidden" }}
           >
-            {/* Ring overlay canvas */}
-            <div style={{ position: "absolute", inset: -40, zIndex: 2, pointerEvents: "none" }}>
+                        <div style={{ position: "absolute", inset: -40, zIndex: 2, pointerEvents: "none" }}>
               <Canvas camera={{ position: [0, 0, 7], fov: 55 }} style={{ width: "100%", height: "100%" }}>
                 <PhotoFrameScene />
               </Canvas>
@@ -850,8 +799,7 @@ export default function TeamRaftaar() {
               </div>
               <div style={{ fontFamily: "'Space Mono',monospace", fontSize: "0.52rem", color: "#334155", letterSpacing: "0.15em" }}>DTU · NEW DELHI</div>
             </div>
-            {/* corner brackets */}
-            {[["top:16px", "right:18px", "marginLeft:auto"], ["top:16px", "left:18px", ""]].map((_, idx) => (
+                        {[["top:16px", "right:18px", "marginLeft:auto"], ["top:16px", "left:18px", ""]].map((_, idx) => (
               <div key={idx} style={{ position: "absolute", top: 16, [idx === 0 ? "right" : "left"]: 18, zIndex: 4 }}>
                 <div style={{ width: 18, height: 1, background: "rgba(56,189,248,0.4)", marginBottom: 3, marginLeft: idx === 0 ? "auto" : 0 }} />
                 <div style={{ width: 1, height: 18, background: "rgba(56,189,248,0.4)", marginLeft: idx === 0 ? "auto" : 0 }} />
@@ -860,8 +808,7 @@ export default function TeamRaftaar() {
           </motion.div>
         </section>
 
-        {/* ABOUT */}
-        <section style={{ marginBottom: 100 }}>
+                <section style={{ marginBottom: 100 }}>
           <SLabel n={3} title="About" />
           <motion.div
             initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }}
@@ -887,41 +834,35 @@ export default function TeamRaftaar() {
           </motion.div>
         </section>
 
-        {/* ACHIEVEMENTS */}
-        <section style={{ marginBottom: 100 }}>
+                <section style={{ marginBottom: 100 }}>
           <SLabel n={4} title="Podium" />
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {ACHIEVEMENTS.map((a, i) => <AchRow key={i} {...a} i={i} />)}
           </div>
         </section>
 
-        {/* BIG INTERACTIVE 3D DIVIDER */}
-        <motion.div
+                <motion.div
           initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
           style={{ height: 380, marginBottom: 100, position: "relative", borderRadius: 4, overflow: "hidden" }}
         >
           <DividerScene />
-          {/* Side fades */}
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, #020c1b 0%, transparent 10%, transparent 90%, #020c1b 100%)", pointerEvents: "none" }} />
+                    <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to right, #020c1b 0%, transparent 10%, transparent 90%, #020c1b 100%)", pointerEvents: "none" }} />
           <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to bottom, #020c1b 0%, transparent 18%, transparent 82%, #020c1b 100%)", pointerEvents: "none" }} />
-          {/* Label */}
-          <div style={{ position: "absolute", bottom: 24, left: 0, right: 0, display: "flex", justifyContent: "center", pointerEvents: "none" }}>
+                    <div style={{ position: "absolute", bottom: 24, left: 0, right: 0, display: "flex", justifyContent: "center", pointerEvents: "none" }}>
             <span style={{ fontFamily: "'Space Mono',monospace", fontSize: "0.5rem", letterSpacing: "0.35em", color: "#0f2744", textTransform: "uppercase" }}>
               DRAG TO ROTATE
             </span>
           </div>
         </motion.div>
 
-        {/* LEADERSHIP */}
-        <section style={{ marginBottom: 100 }}>
+                <section style={{ marginBottom: 100 }}>
           <SLabel n={5} title="Command" />
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(230px,1fr))", gap: 10 }}>
             {LEADERSHIP.map((p, i) => <PersonCard key={i} {...p} i={i} />)}
           </div>
         </section>
 
-        {/* SPONSORS */}
-        <section style={{ marginBottom: 72 }}>
+                <section style={{ marginBottom: 72 }}>
           <SLabel n={6} title="Partners" />
           <div style={{ display: "flex", flexWrap: "wrap", gap: 9 }}>
             {SPONSORS.map((s, i) => (

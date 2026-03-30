@@ -52,8 +52,6 @@ export default function PeripheralNode({ position, title, onClick }) {
       }}
     >
       <Billboard>
-
-        {/* ── PULSING GLOW ── */}
         <mesh ref={glowRef} position={[0, 0, -0.1]}>
           <planeGeometry args={[1.97, 1.97]} />
           <meshBasicMaterial
@@ -63,8 +61,6 @@ export default function PeripheralNode({ position, title, onClick }) {
             depthWrite={false}
           />
         </mesh>
-
-        {/* ── HOVER GLOW HALO ── */}
         <mesh position={[0, 0, -0.06]}>
           <planeGeometry args={[2.2, 2.2]} />
           <meshBasicMaterial
@@ -73,8 +69,6 @@ export default function PeripheralNode({ position, title, onClick }) {
             opacity={hovered ? 0.07 : 0}
           />
         </mesh>
-
-        {/* ── GLASS BODY ── */}
         <mesh position={[0, 0, 0]}>
           <planeGeometry args={[1.9, 1.9]} />
           <meshBasicMaterial
@@ -83,8 +77,6 @@ export default function PeripheralNode({ position, title, onClick }) {
             opacity={hovered ? 0.62 : 0.48}
           />
         </mesh>
-
-        {/* ── TOP SHEEN ── */}
         <mesh position={[0, 0.72, 0.01]}>
           <planeGeometry args={[1.9, 0.46]} />
           <meshBasicMaterial
@@ -93,8 +85,6 @@ export default function PeripheralNode({ position, title, onClick }) {
             opacity={0.06}
           />
         </mesh>
-
-        {/* ── THIN BORDER ── */}
         <mesh position={[0, 0, 0.02]}>
           <planeGeometry args={[1.95, 1.95]} />
           <meshBasicMaterial
@@ -103,8 +93,6 @@ export default function PeripheralNode({ position, title, onClick }) {
             opacity={hovered ? 0.7 : 0.35}
           />
         </mesh>
-
-        {/* ── ICON ── */}
         <Text
           position={[0, 0.28, 0.05]}
           fontSize={0.52}
@@ -114,8 +102,6 @@ export default function PeripheralNode({ position, title, onClick }) {
         >
           {getIcon(title)}
         </Text>
-
-        {/* ── THIN DIVIDER ── */}
         <mesh position={[0, -0.08, 0.04]}>
           <planeGeometry args={[1.5, 0.007]} />
           <meshBasicMaterial
@@ -124,8 +110,6 @@ export default function PeripheralNode({ position, title, onClick }) {
             opacity={hovered ? 0.45 : 0.15}
           />
         </mesh>
-
-        {/* ── TITLE ── */}
         <Text
           position={[0, -0.42, 0.05]}
           fontSize={0.2}

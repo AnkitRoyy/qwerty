@@ -1,9 +1,8 @@
-/* 🔥 BASE (MATCH NAVBAR GLASS) */
 .footer {
   width: 100%;
   padding: 22px 60px;
 
-  background: rgba(20, 35, 60, 0.35); /* SAME FAMILY */
+  background: rgba(20, 35, 60, 0.35);
   backdrop-filter: blur(28px);
 
   border-top: 1px solid rgba(120, 180, 255, 0.18);
@@ -12,14 +11,12 @@
   overflow: hidden;
 }
 
-/* 🔥 INNER */
 .footer-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-/* 🔥 LOGO */
 .footer-left {
   font-size: 1rem;
   font-weight: 600;
@@ -31,17 +28,15 @@
 }
 
 .logo-accent {
-  color: #7dd3fc; /* SAME AS NAVBAR */
+  color: #7dd3fc;
   margin-left: 6px;
 }
 
-/* 🔥 MENU */
 .footer-center {
   display: flex;
   gap: 30px;
 }
 
-/* 🔥 LINKS */
 .footer-link {
   position: relative;
   font-size: 0.9rem;
@@ -53,12 +48,10 @@
   transition: all 0.25s ease;
 }
 
-/* 🔥 HOVER (MATCH UI ACCENT) */
 .footer-link:hover {
   color: #7dd3fc;
 }
 
-/* 🔥 UNDERLINE (SUBTLE BLUE, NOT WHITE) */
 .footer-link::after {
   content: "";
   position: absolute;
@@ -81,13 +74,11 @@
   width: 100%;
 }
 
-/* 🔥 RIGHT */
 .footer-right {
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.4);
 }
 
-/* 🔥 CURSOR GLOW (MATCH NAVBAR EXACTLY) */
 .footer::before {
   content: "";
   position: absolute;
@@ -108,7 +99,6 @@
   opacity: 1;
 }
 
-/* 📱 RESPONSIVE */
 @media (max-width: 768px) {
   .footer {
     padding: 18px 20px;

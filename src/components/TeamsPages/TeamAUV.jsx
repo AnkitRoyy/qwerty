@@ -4,10 +4,6 @@ import { useNavigate } from "react-router-dom"
 import { Canvas, useFrame } from "@react-three/fiber"
 import { OrbitControls, Stars } from "@react-three/drei"
 import * as THREE from "three"
-
-// ─────────────────────────────────────────────────────────
-//  PLACEHOLDER IMAGE URLS
-// ─────────────────────────────────────────────────────────
 const GALLERY_IMAGES = [
   { url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80", caption: "Varuna 4.0 · Water tank trials" },
   { url: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80", caption: "AMUROVc 2026 · Competition floor" },
@@ -16,10 +12,6 @@ const GALLERY_IMAGES = [
   { url: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=800&q=80", caption: "Software stack review" },
   { url: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=80", caption: "Depth sensor calibration" },
 ]
-
-// ─────────────────────────────────────────────────────────
-//  DATA
-// ─────────────────────────────────────────────────────────
 const STATS = [
   { value: "05", label: "Departments",     unit: "core"      },
   { value: "04", label: "Major Awards",    unit: "podiums"   },
@@ -51,10 +43,6 @@ const MEMBERS = [
 const TOOLCHAIN = [
   "SolidWorks","ANSYS","CFD","ROS Kinetic","PID Control","CNNs","YOLOv2","Arduino","STM32","MATLAB","LTspice","Altium Designer",
 ]
-
-// ─────────────────────────────────────────────────────────
-//  SHARED UTILS
-// ─────────────────────────────────────────────────────────
 function useMouse() {
   const mouse = useRef({ x: 0, y: 0 })
   useEffect(() => {
@@ -67,10 +55,6 @@ function useMouse() {
   }, [])
   return mouse
 }
-
-// ─────────────────────────────────────────────────────────
-//  THREE.JS HERO SCENE (all unchanged)
-// ─────────────────────────────────────────────────────────
 function EarthGlobe() {
   const meshRef = useRef(), wireRef = useRef(), glowRef = useRef(), atmosphereRef = useRef()
   const wireGeo = useMemo(() => {
@@ -286,10 +270,6 @@ function HeroScene() {
     </Canvas>
   )
 }
-
-// ─────────────────────────────────────────────────────────
-//  DIVIDER SCENE
-// ─────────────────────────────────────────────────────────
 function DataNode({position,phase}) {
   const ref=useRef()
   useFrame(({clock})=>{const t=clock.getElapsedTime(); if(ref.current){ref.current.material.opacity=0.5+Math.sin(t*1.5+phase)*0.3; const s=0.85+Math.sin(t*1.5+phase)*0.18; ref.current.scale.set(s,s,s)}})
@@ -333,10 +313,6 @@ function DividerRings() {
 function DividerScene() {
   return (<Canvas camera={{position:[0,0,8],fov:52}} style={{width:"100%",height:"100%"}} gl={{antialias:true}}><color attach="background" args={["#020c1b"]} /><DividerRings /></Canvas>)
 }
-
-// ─────────────────────────────────────────────────────────
-//  STATS 3D SCENE
-// ─────────────────────────────────────────────────────────
 function StatOrbInstance({position,color,hovered}) {
   const r1=useRef(), r2=useRef(), core=useRef()
   useFrame(({clock})=>{
@@ -359,10 +335,6 @@ function StatsScene({hoveredIdx}) {
     {STAT_POSITIONS.map((pos,i)=>(<StatOrbInstance key={i} position={pos} color={STAT_COLORS[i]} hovered={hoveredIdx===i} />))}
   </Canvas>)
 }
-
-// ─────────────────────────────────────────────────────────
-//  TROPHY ORB
-// ─────────────────────────────────────────────────────────
 function TrophyOrbSingle({color,position}) {
   const r1=useRef(), r2=useRef(), dot=useRef()
   useFrame(({clock})=>{
@@ -377,12 +349,6 @@ function TrophyOrbSingle({color,position}) {
     <mesh ref={dot}><sphereGeometry args={[0.16,14,14]} /><meshBasicMaterial color={color} transparent opacity={0.9} depthWrite={false} /></mesh>
   </group>)
 }
-
-// ─────────────────────────────────────────────────────────
-//  UI PRIMITIVES
-// ─────────────────────────────────────────────────────────
-
-// Section label
 function SLabel({n, title}) {
   return (
     <motion.div initial={{opacity:0,x:-10}} whileInView={{opacity:1,x:0}} viewport={{once:true}}
@@ -395,8 +361,6 @@ function SLabel({n, title}) {
     </motion.div>
   )
 }
-
-// Text block wrapper
 function TextBlock({children}) {
   return (
     <motion.div initial={{opacity:0,y:16}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{duration:0.6,ease:[0.22,1,0.36,1]}}
@@ -409,12 +373,6 @@ function TextBlock({children}) {
     </motion.div>
   )
 }
-
-// ─────────────────────────────────────────────────────────
-//  SECTION COMPONENTS
-// ─────────────────────────────────────────────────────────
-
-// Telemetry — full-width 4-col grid, tall cards
 function TelemetrySection({hoveredStat, setHoveredStat}) {
   return (
     <section style={{marginBottom:120}}>
@@ -447,8 +405,6 @@ function TelemetrySection({hoveredStat, setHoveredStat}) {
     </section>
   )
 }
-
-// About — two-column layout: text left, key facts right
 function AboutSection() {
   return (
     <section style={{marginBottom:120}}>
@@ -465,8 +421,7 @@ function AboutSection() {
             <span style={{color:"#38bdf8",fontWeight:500}}>industrial-grade performance and reliability</span>.
           </p>
         </TextBlock>
-        {/* Quick facts sidebar */}
-        <motion.div initial={{opacity:0,y:16}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{duration:0.6,delay:0.15,ease:[0.22,1,0.36,1]}}
+                <motion.div initial={{opacity:0,y:16}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{duration:0.6,delay:0.15,ease:[0.22,1,0.36,1]}}
           style={{padding:"36px 30px",borderRadius:8,background:"rgba(4,16,40,0.92)",border:"1px solid rgba(56,189,248,0.28)",boxShadow:"0 4px 28px rgba(0,0,0,0.6)",backdropFilter:"blur(18px)",display:"flex",flexDirection:"column",gap:28}}>
           {[{label:"Founded",value:"2018"},{label:"Institution",value:"DTU"},{label:"City",value:"New Delhi"},{label:"Advisor",value:"Prof. K.C. Tiwari"}].map((f,i)=>(
             <div key={i} style={{borderBottom:"1px solid rgba(56,189,248,0.1)",paddingBottom:20,lastChild:{border:"none"}}}>
@@ -479,8 +434,6 @@ function AboutSection() {
     </section>
   )
 }
-
-// Departments — 3-col grid then 2-col for last two
 function DepartmentsSection() {
   return (
     <section style={{marginBottom:120}}>
@@ -515,8 +468,6 @@ function DeptCard({role,name,description,i}) {
     </motion.div>
   )
 }
-
-// Podium — full-width rows with wider layout
 function PodiumSection() {
   return (
     <section style={{marginBottom:120}}>
@@ -549,15 +500,12 @@ function AchRow({rank,event,comp,color,i}) {
         <div style={{color:"#f1f5f9",fontSize:"1.1rem",fontWeight:600,marginBottom:7,lineHeight:1.3}}>{event}</div>
         <div style={{color:"#64748b",fontSize:"0.8rem",fontFamily:"'Space Mono',monospace",letterSpacing:"0.05em"}}>{comp}</div>
       </div>
-      {/* Year tag */}
-      <div style={{flexShrink:0,textAlign:"right"}}>
+            <div style={{flexShrink:0,textAlign:"right"}}>
         <div style={{width:9,height:9,borderRadius:"50%",background:color,boxShadow:`0 0 10px ${color},0 0 24px ${color}55`,marginLeft:"auto"}} />
       </div>
     </motion.div>
   )
 }
-
-// Latest Development + Research — side by side
 function DevResearchSection() {
   return (
     <section style={{marginBottom:120}}>
@@ -575,8 +523,7 @@ function DevResearchSection() {
             Built around a durable mechanical architecture and sensor-driven control strategy, Varuna 4.0 handles endurance navigation, low-light color-guided movement, and QR-based pickup-and-placement tasks with consistent mission reliability.
           </p>
         </TextBlock>
-        {/* Research stacked in right column */}
-        <div style={{display:"flex",flexDirection:"column",gap:14}}>
+                <div style={{display:"flex",flexDirection:"column",gap:14}}>
           <div style={{fontFamily:"'Space Mono',monospace",fontSize:"0.62rem",letterSpacing:"0.22em",color:"#cbd5e1",textTransform:"uppercase",fontWeight:700,marginBottom:4,display:"flex",alignItems:"center",gap:10}}>
             <div style={{width:24,height:1,background:"rgba(56,189,248,0.4)"}} />
             Research Publications
@@ -602,8 +549,6 @@ function ResearchCard({role,name,description,i}) {
     </motion.div>
   )
 }
-
-// Crew — masonry-style full-width wrap
 function CrewSection() {
   return (
     <section style={{marginBottom:120}}>
@@ -623,8 +568,6 @@ function CrewSection() {
     </section>
   )
 }
-
-// Gallery — 3-col
 function GallerySection() {
   const [lightboxIdx,setLightboxIdx]=useState(null)
   return (
@@ -677,8 +620,6 @@ function GalleryLightbox({images,activeIdx,onClose}) {
     </AnimatePresence>
   )
 }
-
-// Toolchain — full-width dense wrap
 function ToolchainSection() {
   return (
     <section style={{marginBottom:80}}>
@@ -697,10 +638,6 @@ function ToolchainSection() {
     </section>
   )
 }
-
-// ─────────────────────────────────────────────────────────
-//  MAIN COMPONENT
-// ─────────────────────────────────────────────────────────
 export default function TeamAUV() {
   const navigate=useNavigate()
   const heroRef=useRef()
@@ -726,8 +663,7 @@ export default function TeamAUV() {
         ← BACK
       </motion.button>
 
-      {/* ════ HERO ════ */}
-      <section ref={heroRef} style={{position:"relative",height:"100vh",overflow:"hidden"}}>
+            <section ref={heroRef} style={{position:"relative",height:"100vh",overflow:"hidden"}}>
         <motion.div style={{position:"absolute",inset:0,scale:sceneScale}}><HeroScene /></motion.div>
         <motion.div initial={{opacity:0}} animate={{opacity:1}} transition={{delay:1.8}}
           style={{position:"absolute",top:24,right:24,zIndex:12,fontFamily:"'Space Mono',monospace",fontSize:"0.48rem",letterSpacing:"0.22em",color:"#1e3a5f",textTransform:"uppercase"}}>
@@ -757,16 +693,14 @@ export default function TeamAUV() {
         </motion.div>
       </section>
 
-      {/* ════ CONTENT — full bleed with generous padding ════ */}
-      <div style={{maxWidth:1280,margin:"0 auto",padding:"110px 48px 80px"}}>
+            <div style={{maxWidth:1280,margin:"0 auto",padding:"110px 48px 80px"}}>
 
         <TelemetrySection hoveredStat={hoveredStat} setHoveredStat={setHoveredStat} />
         <AboutSection />
         <DepartmentsSection />
         <PodiumSection />
 
-        {/* Divider */}
-        <motion.div initial={{opacity:0}} whileInView={{opacity:1}} viewport={{once:true}}
+                <motion.div initial={{opacity:0}} whileInView={{opacity:1}} viewport={{once:true}}
           style={{height:400,marginBottom:120,position:"relative",borderRadius:8,overflow:"hidden"}}>
           <DividerScene />
           <div style={{position:"absolute",inset:0,background:"linear-gradient(to right,#020c1b 0%,transparent 10%,transparent 90%,#020c1b 100%)",pointerEvents:"none"}} />

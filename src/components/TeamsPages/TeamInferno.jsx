@@ -54,14 +54,10 @@ const TOOLCHAIN = [
   "ROS2","SLAM","Sensor Fusion","NVIDIA Jetson","STM32",
   "Python","C++","Cycloidal Drives","Raman Spectroscopy","Path Planning",
 ]
-
-// ─── ACCENT ────────────────────────────────────────────────
 const A  = "#f97316"
 const A2 = "#fb923c"
 const A3 = "#fbbf24"
 const BG = "#0a0200"
-
-// ─── SHARED ────────────────────────────────────────────────
 function useMouse() {
   const mouse = useRef({ x: 0, y: 0 })
   useEffect(() => {
@@ -70,8 +66,6 @@ function useMouse() {
   }, [])
   return mouse
 }
-
-// ─── MARS PLANET ───────────────────────────────────────────
 function MarsPlanet() {
   const meshRef = useRef(), wireRef = useRef(), glowRef = useRef(), atmRef = useRef()
   const wireGeo = useMemo(() => {
@@ -122,8 +116,6 @@ function MarsSurface() {
   useFrame(({clock})=>{if(mesh.current){mesh.current.rotation.y=clock.getElapsedTime()*0.06; mesh.current.material.opacity=0.6+Math.sin(clock.getElapsedTime()*0.6)*0.12}})
   return (<points ref={mesh}><bufferGeometry><bufferAttribute attach="attributes-position" args={[positions,3]} /></bufferGeometry><pointsMaterial color="#fb923c" size={0.07} transparent opacity={0.65} depthWrite={false} /></points>)
 }
-
-// ─── PLANETARY RINGS ───────────────────────────────────────
 function PlanetaryRings() {
   const refs = [useRef(),useRef(),useRef(),useRef()]
   useFrame(({clock})=>{
@@ -140,8 +132,6 @@ function PlanetaryRings() {
     <mesh ref={refs[3]} rotation={[Math.PI/3.8,0,Math.PI/7]}><torusGeometry args={[5.5,0.006,3,200]} /><meshBasicMaterial color="#f97316" transparent opacity={0.22} depthWrite={false} /></mesh>
   </group>)
 }
-
-// ─── ROVER MODEL (bright, vivid) ───────────────────────────
 function RoverModel() {
   const wheelRefs = [useRef(),useRef(),useRef(),useRef(),useRef(),useRef()]
   const armRef=useRef(), sensorRef=useRef(), lightRef=useRef()
@@ -152,7 +142,6 @@ function RoverModel() {
     if(sensorRef.current)sensorRef.current.rotation.y= t*1.2
     if(lightRef.current) lightRef.current.intensity   = 3.5+Math.sin(t*3.5)*0.8
   })
-  // Brighter materials
   const bodyMat  = <meshStandardMaterial color="#1a0800" roughness={0.2} metalness={0.85} emissive="#5a1e00" emissiveIntensity={1.2} />
   const panelMat = <meshStandardMaterial color="#2a1000" roughness={0.25} metalness={0.75} emissive="#3a1500" emissiveIntensity={0.9} />
   const glowMat  = <meshStandardMaterial color="#f97316" roughness={0.02} metalness={0.1} emissive="#f97316" emissiveIntensity={6} />
@@ -274,8 +263,6 @@ function HeroScene() {
     </Canvas>
   )
 }
-
-// ─── DIVIDER ───────────────────────────────────────────────
 function DataNodeD({position,phase}) {
   const ref=useRef()
   useFrame(({clock})=>{const t=clock.getElapsedTime(); if(ref.current){ref.current.material.opacity=0.6+Math.sin(t*1.5+phase)*0.3; const s=0.85+Math.sin(t*1.5+phase)*0.18; ref.current.scale.set(s,s,s)}})
@@ -319,8 +306,6 @@ function DividerContent() {
 function DividerScene() {
   return (<Canvas camera={{position:[0,0,8],fov:52}} style={{width:"100%",height:"100%"}} gl={{antialias:true}}><color attach="background" args={["#0a0200"]} /><DividerContent /></Canvas>)
 }
-
-// ─── STATS ORBS ────────────────────────────────────────────
 const STAT_COLORS=[A,A2,A3,A]
 const STAT_POSITIONS=[[-4.5,0,0],[-1.5,0,0],[1.5,0,0],[4.5,0,0]]
 function StatOrb({position,color,hovered}) {
@@ -343,8 +328,6 @@ function StatsScene({hoveredIdx}) {
     {STAT_POSITIONS.map((pos,i)=>(<StatOrb key={i} position={pos} color={STAT_COLORS[i]} hovered={hoveredIdx===i} />))}
   </Canvas>)
 }
-
-// ─── TROPHY ────────────────────────────────────────────────
 function TrophyOrb({color,position}) {
   const r1=useRef(), r2=useRef(), dot=useRef()
   useFrame(({clock})=>{
@@ -359,8 +342,6 @@ function TrophyOrb({color,position}) {
     <mesh ref={dot}><sphereGeometry args={[0.16,14,14]} /><meshBasicMaterial color={color} transparent opacity={0.95} depthWrite={false} /></mesh>
   </group>)
 }
-
-// ─── UI ────────────────────────────────────────────────────
 function SLabel({n,title}) {
   return (
     <motion.div initial={{opacity:0,x:-10}} whileInView={{opacity:1,x:0}} viewport={{once:true}}
@@ -373,8 +354,6 @@ function SLabel({n,title}) {
     </motion.div>
   )
 }
-
-// Solid card — matches AUV TextBlock opacity
 function Card({children,delay=0,style={}}) {
   return (
     <motion.div initial={{opacity:0,y:16}} whileInView={{opacity:1,y:0}} viewport={{once:true}} transition={{delay,duration:0.6,ease:[0.22,1,0.36,1]}}
@@ -387,8 +366,6 @@ function Card({children,delay=0,style={}}) {
     </motion.div>
   )
 }
-
-// ─── SECTIONS ──────────────────────────────────────────────
 function TelemetrySection({hoveredStat,setHoveredStat}) {
   return (
     <section style={{marginBottom:120}}>
@@ -662,8 +639,6 @@ function ToolchainSection() {
     </section>
   )
 }
-
-// ─── ROOT ──────────────────────────────────────────────────
 export default function TeamInferno() {
   const navigate=useNavigate()
   const heroRef=useRef()
