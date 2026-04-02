@@ -4,6 +4,25 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import { Stars } from "@react-three/drei"
 import * as THREE from "three"
 
+import img1 from "../../assets/teams/UGV/1.jpeg"
+import img2 from "../../assets/teams/UGV/2.jpg"
+import img3 from "../../assets/teams/UGV/3.jpeg"
+import img4 from "../../assets/teams/UGV/4.jpg"
+import img5 from "../../assets/teams/UGV/5.jpeg"
+import img6 from "../../assets/teams/UGV/6.jpg"
+
+
+
+
+const GALLERY = [
+  { url: img1,  },
+  { url: img2, },
+  { url: img3,  },
+  { url: img4, },
+  { url: img5,  },
+  { url: img6,  },
+]
+
 const C = {
   bg: "#040d08",
   accent: "#00ff88",
@@ -16,37 +35,49 @@ const C = {
 }
 
 const STATS = [
-  { value: "6", label: "Wheel Drive", unit: "4WD·6WD" },
-  { value: "3", label: "Active Comps", unit: "circuits" },
+  { value: "6", label: "Rovers Built", unit: "since 2019" },
+  { value: "DTU", label: "Delhi Tech Univ", unit: "New Delhi" },
   { value: "ROS2", label: "Autonomy Stack", unit: "powered" },
-  { value: "IP67", label: "Dust & Water", unit: "rated" },
+  { value: "IGVC", label: "Global Rank 15", unit: "2025" },
 ]
 
 const DEPARTMENTS = [
-  { role: "Mechanical", name: "Chassis, suspension & terrain systems", description: "Engineers robust all-terrain frames, differential drives, and suspension geometry to handle steep slopes, loose gravel, and obstacle fields in competition environments." },
-  { role: "Electrical", name: "Power systems & embedded control", description: "Designs power management boards, motor driver arrays, and failsafe circuits. Integrates STM32 and custom PCBs validated through LTspice and Altium Designer." },
-  { role: "Autonomy", name: "Perception, SLAM & path planning", description: "Fuses LiDAR, stereo cameras and IMU on a ROS2 stack. Implements SLAM-based mapping and local/global planners for untethered terrain navigation." },
-  { role: "Computer Vision", name: "Object detection & scene understanding", description: "Trains YOLOv8 pipelines for obstacle classification, ArUco marker detection, and GPS-denied localisation using visual odometry." },
-  { role: "Operations", name: "Strategy, logistics & documentation", description: "Coordinates competition campaigns, manages the technical design report cycle, and aligns team milestones with sponsorship deliverables." },
+  {
+    role: "Autonomy",
+    name: "Perception, localization, planning & control",
+    description: "Fuses LiDAR, stereo cameras and IMU on a ROS2 stack. Implements SLAM-based mapping and Nav2 local/global planners for untethered terrain navigation in unstructured outdoor environments.",
+  },
+  {
+    role: "Robotics Systems",
+    name: "Mechanical, electronics & embedded systems",
+    description: "Designs robust all-terrain chassis, motor driver arrays, power management boards, and failsafe circuits. Integrates custom PCBs and embedded controllers validated through simulation and field testing.",
+  },
+  {
+    role: "Research",
+    name: "SLAM, AI perception & robust autonomy",
+    description: "Focused on advancing SLAM algorithms, AI-based obstacle detection, and GPS-denied localization through experimentation. Trains YOLOv8 pipelines and develops visual odometry for real-world terrain operations.",
+  },
 ]
 
 const ACHIEVEMENTS = [
-  { rank: "1ST PLACE", event: "IGVC AutoNav · 2024", comp: "Autonomous ground vehicle navigation challenge", color: "#00ff88" },
-  { rank: "TOP 10 GLOBALLY", event: "ENSC · 2024", comp: "Emergency Navigation Systems Competition", color: "#ffcc00" },
-  { rank: "BEST DESIGN", event: "Robocon India · 2023", comp: "National robotics design recognition", color: "#00cc66" },
-  { rank: "2ND PLACE", event: "Autonomous Robotics Challenge · 2023", comp: "Regional UGV autonomy circuit", color: "#00ffaa" },
+  { rank: "GLOBAL RANK 10", event: "ISDC · 2026", comp: "International Space Drone Challenge — aerial autonomy in GPS-denied environments", color: "#00ff88" },
+  { rank: "GLOBAL RANK 15", event: "IGVC · 2025", comp: "Intelligent Ground Vehicle Competition — autonomous outdoor navigation", color: "#00ffaa" },
+  { rank: "3RD PLACE", event: "IGVC Cyber Challenge & Design · 2023", comp: "Cybersecurity and design track at Intelligent Ground Vehicle Competition", color: "#ffcc00" },
+  { rank: "2ND PLACE", event: "Techfest IIT Bombay · 2023", comp: "Mernifire and TIH-IoT challenge at India's largest technical festival", color: "#00cc66" },
+  { rank: "1ST RUNNER UP", event: "Autodesk Sustainable Design · 2023", comp: "National sustainable engineering design competition", color: "#00ff88" },
+  { rank: "2ND PLACE", event: "Techfest IIT Bombay · 2022", comp: "Line Following Robot challenge", color: "#00ffaa" },
+  { rank: "3RD PLACE", event: "Techfest IIT Bombay · 2022", comp: "Micromouse autonomous maze-solving competition", color: "#ffcc00" },
+  { rank: "3RD PLACE", event: "MATLAB Mini Drone Competition", comp: "Autonomous drone control using MATLAB and Simulink", color: "#00cc66" },
 ]
 
-const TOOLCHAIN = ["ROS2","SLAM","YOLOv8","LiDAR","OpenCV","STM32","Altium","SolidWorks","MATLAB","Python","C++","Gazebo","Nav2","ArUco","PointCloud"]
-
-const GALLERY = [
-  { url: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&q=80", caption: "Field autonomy test · desert track" },
-  { url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80", caption: "Electronics integration bay" },
-  { url: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80", caption: "Competition deployment · IGVC 2024" },
-  { url: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=80", caption: "LiDAR point-cloud visualisation" },
-  { url: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=800&q=80", caption: "Autonomy stack code sprint" },
-  { url: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80", caption: "Night navigation trials" },
+const TOOLCHAIN = [
+  "ROS2", "Nav2", "SLAM", "YOLOv8", "LiDAR", "OpenCV",
+  "STM32", "Altium", "SolidWorks", "MATLAB", "Simulink",
+  "Python", "C++", "Gazebo", "ArUco", "PointCloud",
+  "RTK-GPS", "Sensor Fusion", "EKF",
 ]
+
+
 
 function terrainY(x, z) {
   const bowl  = Math.sin(z * 0.09) * 0.6
@@ -657,6 +688,7 @@ function TelemetrySection({ hoveredStat, setHoveredStat }) {
     </section>
   )
 }
+
 function AboutSection() {
   return (
     <section style={{marginBottom:110}}>
@@ -664,14 +696,19 @@ function AboutSection() {
       <div style={{display:"grid",gridTemplateColumns:"1fr 310px",gap:14}}>
         <Card>
           <p style={{fontSize:"1.06rem",lineHeight:1.95,color:"#7a9a80",fontWeight:300}}>
-            The <span style={{color:C.bright,fontWeight:600}}>UGV Team</span> engineers Unmanned Ground Vehicles for autonomous outdoor navigation, obstacle avoidance, and GPS-denied terrain operations. We build systems that compete at the highest international level while advancing real-world autonomy research.
+            The <span style={{color:C.bright,fontWeight:600}}>UGV Tech Team at Delhi Technological University</span> is a student-driven robotics team focused on building autonomous ground vehicles for real-world research and competitions.
           </p>
           <p style={{marginTop:20,fontSize:"1.06rem",lineHeight:1.95,color:"#7a9a80",fontWeight:300}}>
-            Our rovers integrate <span style={{color:C.accent,fontWeight:500}}>LiDAR, stereo vision, and multi-modal sensor fusion</span> into a single coherent autonomy stack that operates without human intervention across complex, unstructured terrain.
+            Our work spans <span style={{color:C.accent,fontWeight:500}}>perception, localization, planning, and control</span> — building systems that operate without human intervention across complex, unstructured terrain at the highest international level.
           </p>
         </Card>
         <Card delay={0.12} style={{padding:"28px 26px",display:"flex",flexDirection:"column",gap:22}}>
-          {[{label:"Platform",value:"6-wheel UGV"},{label:"Autonomy",value:"ROS2 / Nav2"},{label:"Perception",value:"LiDAR + Stereo"},{label:"Protection",value:"IP67 Rated"}].map((f,i)=>(
+          {[
+            {label:"University", value:"Delhi Tech University"},
+            {label:"Active Rovers", value:"ASHWINI · Valkyrie"},
+            {label:"Autonomy", value:"ROS2 / Nav2"},
+            {label:"Perception", value:"LiDAR + Stereo + YOLO"},
+          ].map((f,i)=>(
             <div key={i} style={{borderBottom:"1px solid rgba(0,255,136,0.1)",paddingBottom:16}}>
               <div style={{fontFamily:"'Space Mono',monospace",fontSize:"0.48rem",letterSpacing:"0.24em",color:C.accent,textTransform:"uppercase",marginBottom:5}}>{f.label}</div>
               <div style={{color:C.bright,fontSize:"0.88rem",fontWeight:600}}>{f.value}</div>
@@ -879,7 +916,7 @@ export default function TeamUGV() {
           </motion.div>
           <motion.h1 initial={{opacity:0,x:-24}} animate={{opacity:1,x:0}} transition={{delay:0.45,duration:0.85,ease:[0.22,1,0.36,1]}}
             style={{fontFamily:"'Space Mono',monospace",fontSize:"clamp(2.8rem,7.5vw,7rem)",fontWeight:700,letterSpacing:"-0.04em",lineHeight:0.9,color:C.bright,textShadow:"0 4px 24px rgba(4,13,8,0.85)"}}>
-            TEAM<br/><span style={{color:C.accent,textShadow:"0 0 30px rgba(0,255,136,0.4)"}}>UGV</span>
+            TEAM<br/><span style={{color:C.accent,textShadow:"0 0 30px rgba(0,255,136,0.4)"}}>UGV-DTU</span>
           </motion.h1>
           <motion.p initial={{opacity:0}} animate={{opacity:1}} transition={{delay:0.85}}
             style={{marginTop:22,fontFamily:"'Space Mono',monospace",fontSize:"0.6rem",letterSpacing:"0.18em",color:"#7a9a80",textTransform:"uppercase",maxWidth:460,lineHeight:1.75}}>
@@ -927,14 +964,14 @@ export default function TeamUGV() {
       </section>
 
       <div style={{maxWidth:1260,margin:"0 auto",padding:"100px 44px 80px"}}>
-        {/*
+        
         <TelemetrySection hoveredStat={hoveredStat} setHoveredStat={setHoveredStat}/>
         <AboutSection/>
         <DepartmentsSection/>
         <PodiumSection/>
         <GallerySection/>
         <ToolchainSection/>
-        */}
+       
       </div>
     </div>
   )

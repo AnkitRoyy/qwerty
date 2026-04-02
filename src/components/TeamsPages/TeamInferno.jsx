@@ -5,13 +5,22 @@ import { Canvas, useFrame } from "@react-three/fiber"
 import { OrbitControls, Stars } from "@react-three/drei"
 import * as THREE from "three"
 
+import img1 from "../../assets/teams/INFERNO/1.png"
+import img2 from "../../assets/teams/INFERNO/2.jpg"
+import img3 from "../../assets/teams/INFERNO/3.jpg"
+import img4 from "../../assets/teams/INFERNO/4.png"
+import img5 from "../../assets/teams/INFERNO/5.png"
+import img6 from "../../assets/teams/INFERNO/6.png"
+import img7 from "../../assets/teams/INFERNO/7.png"
+
 const GALLERY_IMAGES = [
-  { url: "https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?w=800&q=80", caption: "AARAMBH · Field trials" },
-  { url: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&q=80", caption: "Autonomous navigation test" },
-  { url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80", caption: "Electronics integration sprint" },
-  { url: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&q=80", caption: "Robotic arm assembly" },
-  { url: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80", caption: "Science payload integration" },
-  { url: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=80", caption: "ROS2 stack testing session" },
+  { url: img1,  },
+  { url: img2, },
+  { url: img3,  },
+  { url: img4, },
+  { url: img5,  },
+  { url: img6,  },
+  { url: img7,  },
 ]
 
 const STATS = [

@@ -6,7 +6,7 @@ import TeamInferno from './TeamsPages/TeamInferno'
 import TeamRaftaar from './TeamsPages/TeamRaftaar'
 
 const teamComponents = {
-  UGV: TeamUGV,
+  "UGV-DTU": TeamUGV,
   AUV: TeamAUV,
   RAFTAAR: TeamRaftaar,
   INFERNO: TeamInferno,

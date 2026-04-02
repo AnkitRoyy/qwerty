@@ -7,9 +7,10 @@ import CentralNode from './CentralNode'
 import PeripheralNode from './PeripheralNode'
 import Connections from './Connections'
 
+
 const TEAMS = [
-  "UAS DTU", "RAFTAAR", "UGV", "ALTAIR",
-  "ROBOTICS", "SOLARIS", "AUV", "Team 1", "Team 2", "team 3",
+  "UAS", "RAFTAAR", "UGV-DTU", "ALTAIR",
+  "TEAM UDUPI", "ROCKETRY", "AUV", "INFERNO", "SMV", "TDR", "OKAMI RACING",
 ]
 
 function RotatingGroup({ nodes, isHovering, onNodeClick }) {

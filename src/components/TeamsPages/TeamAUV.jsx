@@ -4,13 +4,25 @@ import { useNavigate } from "react-router-dom"
 import { Canvas, useFrame } from "@react-three/fiber"
 import { OrbitControls, Stars } from "@react-three/drei"
 import * as THREE from "three"
+
+
+import img1 from "../../assets/teams/AUV/1.png"
+import img2 from "../../assets/teams/AUV/2.jpg"
+import img3 from "../../assets/teams/AUV/3.png"
+import img4 from "../../assets/teams/AUV/4.jpg"
+import img5 from "../../assets/teams/AUV/5.png"
+import img6 from "../../assets/teams/AUV/6.png"
+
+
+
+
 const GALLERY_IMAGES = [
-  { url: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80", caption: "Varuna 4.0 · Water tank trials" },
-  { url: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&q=80", caption: "AMUROVc 2026 · Competition floor" },
-  { url: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80", caption: "Electronics integration sprint" },
-  { url: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=800&q=80", caption: "Mechanical assembly · Semester 1" },
-  { url: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=800&q=80", caption: "Software stack review" },
-  { url: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=80", caption: "Depth sensor calibration" },
+  { url: img1,  },
+  { url: img2, },
+  { url: img3,  },
+  { url: img4, },
+  { url: img5,  },
+  { url: img6,  },
 ]
 const STATS = [
   { value: "05", label: "Departments",     unit: "core"      },
